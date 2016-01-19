@@ -29,15 +29,14 @@ class TestIsland(unittest.TestCase):
 
   def test_island_updateTile(self):
     self.island.board = TestConstants.GetTileBoard
-    tile = Tile(name=TileName.CliffsOfAbandon, 
-                player=PlayerType.Engineer, 
+    tile = Tile(name=TileName.DunesOfDeception, 
+                player=PlayerType.Pilot, 
                 status=TileStatus.Raised)
 
-    self.island.updateTile(tile)
+    self.island.updateTile(TileName.CliffsOfAbandon, tile)
 
     expected = TestConstants.UpdateTileBoard
     self.assertEqual(expected, self.island.board)
-
 
 class TestTile(unittest.TestCase):
   """ Testing the Tile class """
@@ -61,6 +60,32 @@ class TestTile(unittest.TestCase):
                 '\   /')
 
     self.assertEqual(expected, actual)
+
+  def test_tile_get_allValuesSet(self):
+    tile = Tile(name=TileName.DunesOfDeception, 
+                player=PlayerType.Pilot, 
+                status=TileStatus.Sunken)
+
+    actual = tile.get()
+
+    expected = ('/DOD\\' +
+                '|PLT|'  +
+                '\SNK/')
+
+    self.assertEqual(expected, actual)
+
+
+  def test_tile_get_hasTreasure(self):
+    tile = Tile(name=TileName.TempleOfTheMoon)
+
+    actual = tile.get()
+
+    expected = ('/TOM\\' +
+                'R   R'  +
+                '\   /')
+
+    self.assertEqual(expected, actual)
+
 
 class TestConstants():
 
@@ -127,8 +152,8 @@ class TestConstants():
   ' |   | |   | |   | |   | |   | |   |  \n' +
   ' \   / \   / \   / \   / \   / \   /  \n' +
   '                                      \n' + 
-  ' /   \ /   \ /   \ /   \ /COA\ /   \\  \n' +
-  ' |   | |   | |   | |   | |ENG| |   |  \n' +
+  ' /   \ /   \ /   \ /   \ /DOD\ /   \\  \n' +
+  ' |   | |   | |   | |   | |PLT| |   |  \n' +
   ' \   / \   / \   / \   / \   / \   /  \n' +
   '                                      \n' + 
   '       /   \ /   \ /   \ /   \\        \n' +
