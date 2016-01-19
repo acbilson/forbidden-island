@@ -2,9 +2,37 @@ class Island(object):
 
   NameWidth = 3
   BoardWidth = 39
+  EmptyTileSegment = '     '
 
   def __init__(self):
     self.board = Constants.EmptyBoard
+    self.newBoard = ""
+
+  def generateBoard(self):
+    
+    """ randomly generates a filled board to begin play """
+
+    # Get All indices that will be filled
+    # Randomize the indices
+    # Place each name value into one of the indices
+
+    allIndices = [0, 14, 20,
+                  47, len(self.board)]
+
+    tileSegments = []
+
+    for i in range(0, len(allIndices)-1):
+      tileSegment = self.board[allIndices[i]:allIndices[i+1]]
+      tileSegments.append(tileSegment)
+      tileSegments.append("XXX")
+
+    self.newBoard = ''.join([str(s) for s in tileSegments])
+
+  def getBoard(self):
+
+    """ Returns the island board """
+
+    return self.board
 
   def getTile(self, tileName):
 
@@ -25,6 +53,31 @@ class Island(object):
     """ Currently gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Highly
     resource intensive, but no other way so far """
 
+    indices = self._getIndexSegments(tileName)
+    self._updateBoardWithNewTile(indices, newTile)
+
+  def sinkTile(self, tileName):
+
+    """ Currently gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Highly
+    resource intensive, but no other way so far """
+
+    indices = self._getIndexSegments(tileName)
+    self._updateBoardWithMissingTile(indices)
+
+  def _updateBoardWithNewTile(self, indices, newTile):
+    self.board = (indices[0] + newTile.getTop() + 
+                  indices[1] + newTile.getMid() + 
+                  indices[2] + newTile.getBot() + 
+                  indices[3])
+
+  def _updateBoardWithMissingTile(self, indices):
+    self.board = (indices[0] + self.EmptyTileSegment + 
+                  indices[1] + self.EmptyTileSegment + 
+                  indices[2] + self.EmptyTileSegment + 
+                  indices[3])
+
+  def _getIndexSegments(self, tileName):
+
     ni = self._findTileNameIndex(tileName)
     pi = self._findTilePlayerIndex(ni)
     si = self._findTileStatusIndex(ni)
@@ -34,12 +87,8 @@ class Island(object):
     rightMid = self.board[pi+self.NameWidth+1:si-1]
     rightBot = self.board[si+self.NameWidth+1:len(self.board)]
 
-    self.board = (leftTop + newTile.getTop() + rightTop + newTile.getMid() + rightMid + newTile.getBot() + rightBot)
-
-
-  # Remove the tile entirely from the game board by replacing it with spaces
-  # def sinkTile()
-
+    indices = (leftTop, rightTop, rightMid, rightBot)
+    return indices
 
   def _findTileNameIndex(self, tileName):
     return self.board.index(tileName)
@@ -54,9 +103,6 @@ class Island(object):
     start = index
     end = index + self.NameWidth
     return self.board[start:end]
-
-  def get(self):
-    return self.board
 
 class TileName():
   CliffsOfAbandon = "COA"

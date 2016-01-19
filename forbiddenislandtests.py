@@ -16,6 +16,17 @@ class TestIsland(unittest.TestCase):
   def test_island_ctor(self):
     island = Island()
 
+  def test_island_getBoard(self):
+    self.assertEqual(TestConstants.EmptyBoard, self.island.board)
+
+  def test_island_generateBoard(self):
+    self.island.generateBoard()
+
+    print()
+    print(self.island.board)
+    print()
+    print(self.island.newBoard)
+
   def test_island_getTile(self):
     self.island.board = TestConstants.GetTileBoard
 
@@ -38,7 +49,16 @@ class TestIsland(unittest.TestCase):
     expected = TestConstants.UpdateTileBoard
     self.assertEqual(expected, self.island.board)
 
+  def test_island_sinkTile(self):
+    self.island.board = TestConstants.GetTileBoard
+
+    self.island.sinkTile(TileName.CliffsOfAbandon)
+
+    expected = TestConstants.SunkenBoard
+    self.assertEqual(expected, self.island.board)
+
 class TestTile(unittest.TestCase):
+
   """ Testing the Tile class """
   tile = None
 
@@ -85,7 +105,6 @@ class TestTile(unittest.TestCase):
                 '\   /')
 
     self.assertEqual(expected, actual)
-
 
 class TestConstants():
 
@@ -163,3 +182,30 @@ class TestConstants():
   '             /   \ /   \\              \n' +
   '             |   | |   |              \n' +
   '             \   / \   /              \n')
+
+  SunkenBoard = (
+  '             /   \ /   \\              \n' + 
+  '             |   | |   |              \n' +
+  '             \   / \   /              \n' +
+  '                                      \n' + 
+  '      /   \ /   \ /   \ /   \\         \n' + 
+  '      |   | |   | |   | |   |         \n' + 
+  '      \   / \   / \   / \   /         \n' +
+  '                                      \n' + 
+  ' /   \ /   \ /   \ /   \ /   \ /   \\  \n' +
+  ' |   | |   | |   | |   | |   | |   |  \n' +
+  ' \   / \   / \   / \   / \   / \   /  \n' +
+  '                                      \n' + 
+  ' /   \ /   \ /   \ /   \       /   \\  \n' +
+  ' |   | |   | |   | |   |       |   |  \n' +
+  ' \   / \   / \   / \   /       \   /  \n' +
+  '                                      \n' + 
+  '       /   \ /   \ /   \ /   \\        \n' +
+  '       |   | |   | |   | |   |        \n' +
+  '       \   / \   / \   / \   /        \n' +
+  '                                      \n' + 
+  '             /   \ /   \\              \n' +
+  '             |   | |   |              \n' +
+  '             \   / \   /              \n')
+
+
