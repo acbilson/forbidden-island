@@ -1,5 +1,7 @@
 import unittest
 from island import *
+from tile import *
+from constants import *
 
 class TestIsland(unittest.TestCase):
 
