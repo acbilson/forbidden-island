@@ -26,6 +26,19 @@ class TileName():
   DunesOfDeception = "DOD"
   LostLagoon = "LLG"
 
+class TileStatus():
+  Raised = "   "
+  Sunken = "SNK"
+  Lost = "LST"
+
+class PlayerAction(Enum):
+  Skip = 0
+  Move = 1
+  ShoreUp = 2
+  TradeCard = 3
+  UseCard = 4
+  CaptureTreasure = 5
+  
 class PlayerType():
   Empty = "   "
   Engineer = "ENG"
@@ -43,11 +56,6 @@ class CardType(Enum):
   Water = 5
   Air = 6
   Fire = 7
-
-class TileStatus():
-  Raised = "   "
-  Sunken = "SNK"
-  Lost = "LST"
 
 class Treasure():
   Empty = "|"
