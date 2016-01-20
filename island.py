@@ -1,3 +1,5 @@
+from enum import Enum
+
 class Island(object):
 
   NameWidth = 3
@@ -12,21 +14,57 @@ class Island(object):
     
     """ randomly generates a filled board to begin play """
 
-    # Get All indices that will be filled
     # Randomize the indices
-    # Place each name value into one of the indices
 
-    allIndices = [0, 14, 20,
-                  47, len(self.board)]
+    allNames = ["ABC", "BCD",
+                "CDE", "DEF", "EFG", "FGH", 
+                "GHI", "HIJ", "IJK", "JKL", "KLM", "LMN",
+                "MNO", "NOP", "OPQ", "PQR", "QRS", "RST",
+                "STU", "TUV", "UVW", "VWX",
+                "WXY", "XYZ"]
+
+    allIndices = [14, 20,
+                  163, 169, 175, 181,
+                  314, 320, 326, 332, 338, 344,
+                  470, 476, 482, 488, 494, 500,
+                  632, 638, 644, 650,
+                  794, 800]
+    tiles = []
+
+    for i,n in enumerate(allIndices):
+      tile = Tile(n, allNames[i], PlayerType.Empty, TileStatus.Raised)
+      tiles.append(tile)
 
     tileSegments = []
 
-    for i in range(0, len(allIndices)-1):
-      tileSegment = self.board[allIndices[i]:allIndices[i+1]]
-      tileSegments.append(tileSegment)
-      tileSegments.append("XXX")
+    firstSegment = self.board[0:allIndices[0]]
+    tileSegments.append(firstSegment)
 
-    self.newBoard = ''.join([str(s) for s in tileSegments])
+    for i,t in enumerate(tiles):
+      tileSegments.append(t.name.value)
+      segStart = t.name.index + self.NameWidth
+      segEnd = tiles[i].name.index
+      segment = self.board[segStart:segEnd]
+      # print(segStart, '\t', segEnd, '\t*', segment, '*')
+      tileSegments.append(segment)
+
+    # for i in range(1, len(allIndices)-1):
+      # # Append the tile name
+      # tileSegments.append(allNames[i])
+      # # Append the next segment
+      # segStart = allIndices[i] + self.NameWidth
+      # segEnd = allIndices[i+1]
+      # tileSegment = self.board[segStart:segEnd]
+      # tileSegments.append(tileSegment)
+
+    start = len(allIndices)
+    end = len(self.board)
+    lastSegment = self.board[start:end]
+    tileSegments.append(lastSegment)
+
+    # Turn the segments into one string
+    # [print(s) for s in tileSegments]
+    self.newBoard = ''.join([s for s in tileSegments])
 
   def getBoard(self):
 
@@ -46,7 +84,7 @@ class Island(object):
     mid = self._getValueFromIndex(pi)
     bot = self._getValueFromIndex(si)
 
-    return Tile(name=top, player=mid, status=bot)
+    return Tile(index=ni, name=top, player=mid, status=bot)
 
   def updateTile(self, tileName, newTile):
 
@@ -65,9 +103,9 @@ class Island(object):
     self._updateBoardWithMissingTile(indices)
 
   def _updateBoardWithNewTile(self, indices, newTile):
-    self.board = (indices[0] + newTile.getTop() + 
-                  indices[1] + newTile.getMid() + 
-                  indices[2] + newTile.getBot() + 
+    self.board = (indices[0] + newTile.name.value + 
+                  indices[1] + newTile.player.value + 
+                  indices[2] + newTile.status.value + 
                   indices[3])
 
   def _updateBoardWithMissingTile(self, indices):
@@ -119,11 +157,12 @@ class TileStatus():
 class Tile(object):
 
   Empty = '   '
+  BoardWidth = 39
 
-  def __init__(self, name=Empty, player=Empty, status=Empty):
-    self.name = name
-    self.player = player
-    self.status = status
+  def __init__(self, index, name, player, status):
+    self.name = TileSegment(index, name)
+    self.player = TileSegment(index + self.BoardWidth, player)
+    self.status = TileSegment(index + (self.BoardWidth * 2), status)
 
   def __eq__(self, other):
     if isinstance(other, self.__class__):
@@ -134,38 +173,88 @@ class Tile(object):
   def __ne__(self, other):
     return not self.__eq__(other)
 
-  def get(self):
-    top = self.getTop()
-    mid = self.getMid()
-    bot = self.getBot()
-    return (top + mid + bot)
+  def getNameIndex(self):
+    return self.name.index;
 
-  def getTop(self):
-    return '/' + self.name + '\\'
+  def getPlayerIndex(self):
+    return self.player.index;
 
-  def getMid(self):
-    if self.name in ['TOS', 'TOM']:
-      return 'R' + self.player + 'R'
-    return '|' + self.player + '|'
+  def getStatusIndex(self):
+    return self.status.index;
 
-  def getBot(self):
-    return '\\' + self.status + '/'
+  def getIndices(self):
+    if(self.name.index != 0):
+      return (self.name.index, self.player.index, self.status.index)
+    
+class TileSegment(object):
+
+  def __init__(self, index, value):
+    self.index = index
+    self.value = value
+
+  def __eq__(self, other):
+    if isinstance(other, self.__class__):
+      return (self.index == other.index and
+              self.value == other.value)
+
+  def __ne__(self, other):
+    return not self.__eq__(other)
 
 class TileName():
-  CliffsOfAbandon = "COA"
-  DunesOfDeception = "DOD"
+  FoolsLanding = "FSL"
+  GoldGate = "GGT"
+  IronGate = "IGT"
+  BronzeGate = "BGT"
+  CopperGate = "CGT"
+  SilverGate = "SGT"
+  CoralPalace = "CLP"
+  TidalPalace = "TLP"
+  CaveOfShadows = "COS"
+  CaveOfEmbers = "COE"
+  WhisperingGarden = "WGD"
+  HowlingGarden = "HGD"
   TempleOfTheSun = "TOS"
   TempleOfTheMoon = "TOM"
+  MistyMarsh = "MYM"
+  Watchtower = "WTR"
+  BreakersBridge = "BKB"
+  CrimsonForest = "CFS"
+  Observatory = "OBS"
+  PhantomRock = "PMR"
+  TwilightHollow = "TLH"
+  CliffsOfAbandon = "COA"
+  DunesOfDeception = "DOD"
+  LostLagoon = "LLG"
 
 class PlayerType():
+  Empty = "   "
   Engineer = "ENG"
   Pilot = "PLT"
   Diver = "DVR"
+  Messenger = "MSG"
+  Explorer = "EXP"
+  Navigator = "NAV"
+
+class CardType(Enum):
+  WatersRise = 1
+  Sandbag = 2
+  Airlift = 3
+  Earth = 4
+  Water = 5
+  Air = 6
+  Fire = 7
 
 class TileStatus():
   Raised = "   "
   Sunken = "SNK"
   Lost = "LST"
+
+class Treasure():
+  Empty = "|"
+  Earth = "E"
+  Water = "W"
+  Air = "A"
+  Fire = "F"
 
 class Constants():
 

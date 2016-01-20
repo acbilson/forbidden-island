@@ -1,7 +1,3 @@
-import sys
-sys.path.append("C:\\SourceCode\\PersonalRepo\\Python\\PyLexLib")
-from iofactory import *
-
 import unittest
 from island import *
 
@@ -22,32 +18,34 @@ class TestIsland(unittest.TestCase):
   def test_island_generateBoard(self):
     self.island.generateBoard()
 
-    print()
-    print(self.island.board)
-    print()
-    print(self.island.newBoard)
+    # print()
+    # print(self.island.board)
+    # print()
+    # print(self.island.newBoard)
 
   def test_island_getTile(self):
     self.island.board = TestConstants.GetTileBoard
 
     actual = self.island.getTile(TileName.CliffsOfAbandon)
 
-    expected = Tile(name=TileName.CliffsOfAbandon, 
+    expected = Tile(index=494,
+                    name=TileName.CliffsOfAbandon, 
                     player=PlayerType.Engineer, 
                     status=TileStatus.Sunken)
 
-    self.assertEqual(expected, actual)
+    self.assertEqual(expected.name, actual.name)
 
-  def test_island_updateTile(self):
-    self.island.board = TestConstants.GetTileBoard
-    tile = Tile(name=TileName.DunesOfDeception, 
-                player=PlayerType.Pilot, 
-                status=TileStatus.Raised)
+  # def test_island_updateTile(self):
+    # self.island.board = TestConstants.GetTileBoard
+    # tile = Tile(index=10,
+                # name=TileName.DunesOfDeception, 
+                # player=PlayerType.Pilot, 
+                # status=TileStatus.Raised)
 
-    self.island.updateTile(TileName.CliffsOfAbandon, tile)
+    # self.island.updateTile(TileName.CliffsOfAbandon, tile)
 
-    expected = TestConstants.UpdateTileBoard
-    self.assertEqual(expected, self.island.board)
+    # expected = TestConstants.UpdateTileBoard
+    # self.assertEqual(expected, self.island.board)
 
   def test_island_sinkTile(self):
     self.island.board = TestConstants.GetTileBoard
@@ -63,48 +61,18 @@ class TestTile(unittest.TestCase):
   tile = None
 
   def setUp(self):
-    self.tile = Tile()
+    self.tile = Tile(10, TileName.DunesOfDeception, PlayerType.Engineer, TileStatus.Raised)
 
-  def test_tile_ctor(self):
-    tile = Tile()
-
-    self.assertIsNotNone(tile.name)
-
-  def test_tile_get(self):
-    tile = Tile()
-
-    actual = tile.get()
-
-    expected = ('/   \\' +
-                '|   |'  +
-                '\   /')
+  def test_tile_getIndices(self):
+    actual = self.tile.getIndices()
+    expected = (10, 10+39, 10+(39*2))
 
     self.assertEqual(expected, actual)
 
-  def test_tile_get_allValuesSet(self):
-    tile = Tile(name=TileName.DunesOfDeception, 
-                player=PlayerType.Pilot, 
-                status=TileStatus.Sunken)
+  def test_tile_getNameIndex(self):
+    actual = self.tile.getNameIndex()
 
-    actual = tile.get()
-
-    expected = ('/DOD\\' +
-                '|PLT|'  +
-                '\SNK/')
-
-    self.assertEqual(expected, actual)
-
-
-  def test_tile_get_hasTreasure(self):
-    tile = Tile(name=TileName.TempleOfTheMoon)
-
-    actual = tile.get()
-
-    expected = ('/TOM\\' +
-                'R   R'  +
-                '\   /')
-
-    self.assertEqual(expected, actual)
+    self.assertEqual(10, actual)
 
 class TestConstants():
 
@@ -207,5 +175,3 @@ class TestConstants():
   '             /   \ /   \\              \n' +
   '             |   | |   |              \n' +
   '             \   / \   /              \n')
-
-
