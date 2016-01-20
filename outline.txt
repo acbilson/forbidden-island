@@ -1,0 +1,79 @@
+TODO:
+
+  Investigate curses library - could be helpful for display in terminal
+  Investigate queue library - use for the island bus?
+  Investigate threading library - when working with queue
+
+
+prints welcome screen
+
+  Hello!  Chose your option:
+    1. Start new game
+    2. Continue from last game
+
+If start new game
+
+prints players screen
+
+  How many players (1-4) 2
+
+  [Loop]
+  Choose first player type:
+
+    1. Diver
+    2. Pilot 
+    etc.
+
+
+Messages
+---------------------
+Board
+
+prints the board
+  a. randomizes the tiles
+  b. places the players
+
+(brief pause before the first cards are drawn)
+
+draws the first six cards
+marks those cards as sunken
+refresh the board
+
+main loop:
+
+  take first player in stack
+
+  flash cursor position (cursor will start at player position)
+
+  event loop of some kind, waiting for user input
+  check for exit ('Q' or <ESC>) 
+  sets input to a message type
+    types of message: 
+      move cursor (arrow keys)
+      player action ('M' for move, etc)
+
+  notify observers when an event occurs
+
+events:
+
+  Q: Who registers for these console messages?
+  if a console message:
+
+    OnPlayerMove
+      is legal move?
+      update tiles
+
+Flow:
+          Hit 'M' Key
+               |
+          Sends input to Bus (can I capture index?)
+               |
+          Bus determines it's a MoveMessage
+          ... and sends to registered observers
+               |
+          Island determines if move is valid
+          If yes -> update board tiles
+                    update player index
+          If no ->  sends error message - can't move there
+               |
+          Updates player action counter to one less

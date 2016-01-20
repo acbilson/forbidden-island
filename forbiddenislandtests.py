@@ -1,7 +1,13 @@
 import unittest
 from island import *
 from tile import *
+from islandnotifier import *
 from constants import *
+
+class TestIslandNotifier(unittest.TestCase):
+
+    def test_ctor(self):
+      notifier = IslandNotifier()
 
 class TestIsland(unittest.TestCase):
 
