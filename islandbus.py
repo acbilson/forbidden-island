@@ -43,7 +43,8 @@ class IslandBus(object):
     notifiedSubscribers = []
 
     for s in self.subscribers:
-      if MessageType.All in s.subscribedMessages:
+      # disclude log from all so that I can send to log only
+      if MessageType.All in s.subscribedMessages and message.type != MessageType.Log:
         notifiedSubscribers.append(s)
       if message.type in s.subscribedMessages:
         notifiedSubscribers.append(s)

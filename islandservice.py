@@ -45,21 +45,39 @@ class ConsoleService(IslandNotifier):
     self.subscribedMessages.append(MessageType.All)
     self.io = io
 
-  def print_welcome(self):
-    self.io.write("Welcome to Forbidden Island!\n")
+  # TODO: Move this logic into a ConsoleBegin class or something
+  #       options below should work from objects and call execute()
+  #       on them
+  def initialize(self):
+    self.write_welcome()
+    self.read_name()
+    self.read_playercount()
+
+  def write_welcome(self):
+    self.io.write("Welcome to Forbidden Island!\n\n")
+
+  def read_name(self):
+    self.io.write("What is your name? ")
+    name = self.io.read()
+    self.bus.receive(ConsoleMessage("name: " + name))
+
+  def read_playercount(self):
+    self.io.write("How many players will be playing? ")
+    count = self.io.read()
+    self.bus.receive(ConsoleMessage("players: " + str(count)))
     
   def move_player(self):
     pass
 
   def on_message_received(self, message):
     options = {
-      MessageType.Initialize: self.print_welcome,
+      MessageType.Initialize: self.initialize,
       MessageType.Console_Move: self.move_player
     }
 
-    response = options.get(message.type, lambda: "nothing")
-    response()
-
+    execute = options.get(message.type, lambda: "nothing")
+    response = execute()
+    return response
 
 class ScreenService(IslandNotifier):
   
@@ -83,5 +101,8 @@ class LogService(IslandNotifier):
     self.log.append(entry)
 
   def print_all(self):
-    for l in self.log:
-      self.io.write(l)
+    print("\nDebug Report:")
+    for i,l in enumerate(self.log):
+      report = str(i) + ": " + l
+      self.io.write(report)
+

@@ -71,7 +71,7 @@ class TestService_AllMessages(IslandNotifier):
     self.subscribedMessages.append(MessageType.All)
     self.wasCalled = False
  
-  def on_next(self, message):
+  def on_message_received(self, message):
     self.wasCalled = True
 
 class TestService_MoveMessages(IslandNotifier):
@@ -82,6 +82,6 @@ class TestService_MoveMessages(IslandNotifier):
     self.wasCalled = False
     self.callNumber = 0
    
-  def on_next(self, message):
+  def on_message_received(self, message):
     self.wasCalled = True
     self.callNumber = self.callNumber + 1

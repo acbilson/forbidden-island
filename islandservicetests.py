@@ -3,6 +3,9 @@ from islandbus import *
 from islandservice import *
 from constants import *
 from message import *
+import sys
+sys.path.append('C:\SourceCode\PersonalRepo\Python\PyLexLib')
+from iofactory import *
 
 class TestIslandNotifier(unittest.TestCase):
 
@@ -42,6 +45,18 @@ class TestIslandSubscriber(unittest.TestCase):
 
 class TestConsoleService(unittest.TestCase):
 
+  cs = None
+
+  def setUp(self):
+    bus = IslandBus()
+    tio = FakeIO()
+    cs = ConsoleService(bus, tio)
+
   def test_ctor(self):
     bus = IslandBus()
-    cs = ConsoleService(bus)
+    tio = FakeIO()
+    cs = ConsoleService(bus, tio)
+
+  def on_message_received_notHandled(self):
+    msg = ScreenMessage("Test screen message")
+    self.cs.on_message_received(msg)
