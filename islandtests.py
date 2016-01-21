@@ -1,37 +1,7 @@
 import unittest
 from island import *
 from tile import *
-from islandnotifier import *
 from constants import *
-from islandmain import *
-from player import *
-from message import *
-
-class TestIslandMessage(unittest.TestCase):
-
-    def test_ctor(self):
-      message = IslandMessage("test content", MessageType.Console)
-      self.assertEqual("test content", message.content)
-      self.assertEqual(MessageType.Console, message.type)
-
-class TestConsoleMessage(unittest.TestCase):
-
-    def test_ctor(self):
-      message = ConsoleMessage("test content", MessageType.Console)
-      self.assertEqual("test content", message.content)
-      self.assertEqual(MessageType.Console, message.type)
-
-class TestIslandGame(unittest.TestCase):
-
-  def test_ctor(self):
-    notifier = IslandNotifier()
-    messageFactory = MessageFactory()
-    main = IslandGame(notifier, messageFactory)
-
-class TestPlayer(unittest.TestCase):
-  
-    def test_ctor(self):
-      player = Player(PlayerType.Diver)
 
 class TestIsland(unittest.TestCase):
 

@@ -1,1 +1,6 @@
-py -m unittest forbiddenislandtests islandbustests
+py -m unittest islandtests  `
+               islandbustests `
+               islandservicetests `
+               gametests `
+               messagetests `
+               playertests

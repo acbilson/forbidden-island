@@ -1,9 +1,5 @@
 from enum import Enum
 
-class MessageType(Enum):
-  All = 0
-  Console = 1
-
 class TileName():
   FoolsLanding = "FSL"
   GoldGate = "GGT"

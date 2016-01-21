@@ -5,12 +5,13 @@ from iofactory import *
 class IslandGame(object):
   """ Central class for the Forbidden Island game, where the game loop executes """
 
-  def __init__(self, notifier, messageFactory):
-    self.notifier = notifier
+  def __init__(self, bus, messageFactory):
+    self.bus = bus
     self.messageFactory = messageFactory
 
   def play(self):
-    self.notifier.send(ScreenMessage("Start"))
+    self.notifier.send(StartMessage())
     while(true):
+      #
       break
   
