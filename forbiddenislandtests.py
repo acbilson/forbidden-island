@@ -3,11 +3,35 @@ from island import *
 from tile import *
 from islandnotifier import *
 from constants import *
+from islandmain import *
+from player import *
+from message import *
 
-class TestIslandNotifier(unittest.TestCase):
+class TestIslandMessage(unittest.TestCase):
 
     def test_ctor(self):
-      notifier = IslandNotifier()
+      message = IslandMessage("test content", MessageType.Console)
+      self.assertEqual("test content", message.content)
+      self.assertEqual(MessageType.Console, message.type)
+
+class TestConsoleMessage(unittest.TestCase):
+
+    def test_ctor(self):
+      message = ConsoleMessage("test content", MessageType.Console)
+      self.assertEqual("test content", message.content)
+      self.assertEqual(MessageType.Console, message.type)
+
+class TestIslandGame(unittest.TestCase):
+
+  def test_ctor(self):
+    notifier = IslandNotifier()
+    messageFactory = MessageFactory()
+    main = IslandGame(notifier, messageFactory)
+
+class TestPlayer(unittest.TestCase):
+  
+    def test_ctor(self):
+      player = Player(PlayerType.Diver)
 
 class TestIsland(unittest.TestCase):
 
@@ -26,11 +50,6 @@ class TestIsland(unittest.TestCase):
   def test_island_generateBoard(self):
     self.island.generateBoard()
 
-    # print()
-    # print(self.island.board)
-    # print()
-    # print(self.island.newBoard)
-
   def test_island_getTile(self):
     self.island.board = TestConstants.GetTileBoard
 
@@ -42,18 +61,6 @@ class TestIsland(unittest.TestCase):
                     status=TileStatus.Sunken)
 
     self.assertEqual(expected.name, actual.name)
-
-  # def test_island_updateTile(self):
-    # self.island.board = TestConstants.GetTileBoard
-    # tile = Tile(index=10,
-                # name=TileName.DunesOfDeception, 
-                # player=PlayerType.Pilot, 
-                # status=TileStatus.Raised)
-
-    # self.island.updateTile(TileName.CliffsOfAbandon, tile)
-
-    # expected = TestConstants.UpdateTileBoard
-    # self.assertEqual(expected, self.island.board)
 
   def test_island_sinkTile(self):
     self.island.board = TestConstants.GetTileBoard
