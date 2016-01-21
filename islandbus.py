@@ -21,7 +21,7 @@ class IslandBus(object):
     subscribers = self._get_subscribers_to_notify(message)
 
     for s in subscribers:
-      s.on_next(message)
+      s.on_message_received(message)
 
   def receive(self, message):
 

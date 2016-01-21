@@ -12,6 +12,6 @@ class TestIslandGame(unittest.TestCase):
 
   def test_ctor(self):
     bus = IslandBus()
-    notifier = IslandNotifier(bus)
     messageFactory = MessageFactory()
-    main = IslandGame(notifier, messageFactory)
+    main = IslandGame(bus, messageFactory)
+    main.play()

@@ -1,6 +1,8 @@
 import sys
 sys.path.append('C:\SourceCode\PersonalRepo\Python\PyLexLib')
 from iofactory import *
+from islandbus import *
+
 
 class IslandGame(object):
   """ Central class for the Forbidden Island game, where the game loop executes """
@@ -10,8 +12,25 @@ class IslandGame(object):
     self.messageFactory = messageFactory
 
   def play(self):
-    self.notifier.send(StartMessage())
-    while(true):
-      #
+    self.bus.receive(StartMessage())
+
+    while(True):
+
+      self.bus.listen()
       break
+
+    input()
   
+if __name__ == "__main__":
+
+  cio = IOFactory().GetInstance()
+  bus = IslandBus()
+  factory = MessageFactory()
+  cs = ConsoleService(bus, cio)
+  ls = LogService(bus, cio)
+
+  game = IslandGame(bus, factory)
+
+  game.play()
+
+  ls.print_all()
