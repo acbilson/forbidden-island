@@ -18,14 +18,6 @@ class IslandGame(object):
 
       self.bus.listen()
       break
-
-# class ConsoleIO(object):
-
-  # def read(self):
-    # return sys.stdin.read()
-
-  # def write(self, content):
-    # sys.stout.write(content)
   
 if __name__ == "__main__":
 

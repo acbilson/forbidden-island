@@ -69,7 +69,7 @@ class ConsoleService(IslandNotifier):
  
   def read_playertype(self, count):
     self.io.write("Engineer, Pilot, Diver, Messenger, Explorer, Navigator\n")
-    for i in range(0, count):
+    for i in range(0, int(count)):
       self.io.write("Choose a player type: ")
       playerType = self.io.read()
       self.bus.receive(PlayerMessage(playerType))
