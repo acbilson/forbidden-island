@@ -17,9 +17,8 @@ class IslandSubscriber(object):
 
     bus.add_subscriber(self)
 
-  # Rename
   def on_message_received(self, message):
-    """ Event the notifier will raise when a message applies to this subscriber """
+    """ Event the bus will raise when a message applies to this subscriber """
     pass
 
 class IslandNotifier(IslandSubscriber):
@@ -50,13 +49,14 @@ class ConsoleService(IslandNotifier):
   #       on them
   def initialize(self):
     self.write_welcome()
-    self.read_name()
-    self.read_playercount()
+    self.read_username()
+    count = self.read_playercount()
+    self.read_playertype(count)
 
   def write_welcome(self):
     self.io.write("Welcome to Forbidden Island!\n\n")
 
-  def read_name(self):
+  def read_username(self):
     self.io.write("What is your name? ")
     name = self.io.read()
     self.bus.receive(ConsoleMessage("name: " + name))
@@ -64,20 +64,52 @@ class ConsoleService(IslandNotifier):
   def read_playercount(self):
     self.io.write("How many players will be playing? ")
     count = self.io.read()
-    self.bus.receive(ConsoleMessage("players: " + str(count)))
-    
-  def move_player(self):
-    pass
-
+    self.bus.receive(PlayerMessage(count))
+    return count
+ 
+  def read_playertype(self, count):
+    self.io.write("Engineer, Pilot, Diver, Messenger, Explorer, Navigator\n")
+    for i in range(0, count):
+      self.io.write("Choose a player type: ")
+      playerType = self.io.read()
+      self.bus.receive(PlayerMessage(playerType))
+   
   def on_message_received(self, message):
     options = {
-      MessageType.Initialize: self.initialize,
-      MessageType.Console_Move: self.move_player
+      MessageType.Initialize: self.initialize
     }
 
     execute = options.get(message.type, lambda: "nothing")
     response = execute()
     return response
+
+from player import *
+
+class PlayerService(IslandNotifier):
+
+  def __init__(self, bus):
+    IslandNotifier.__init__(self, bus)
+    self.subscribedMessages.append(MessageType.Player)
+    self.players = []
+
+  def create_players(self, message):
+    for i in range(0, int(message.content)):
+      self.players.append(Player())
+
+    self.bus.receive(LogMessage(str(message.content) + " players created"))
+    
+  def nothing(self, message):
+    errorMsg = str(type(self)) + " did nothing with message " + message.type.name + " with " + str(message.content)
+    self.bus.receive(LogMessage(errorMsg))
+    pass
+
+  def on_message_received(self, message):
+    options = {
+      MessageType.Player : self.create_players
+    }
+
+    execute = options.get(message.type, self.nothing)
+    execute(message)
 
 class ScreenService(IslandNotifier):
   
@@ -94,10 +126,11 @@ class LogService(IslandNotifier):
     IslandNotifier.__init__(self, bus)
     self.io = io
     self.subscribedMessages.append(MessageType.All)
+    self.subscribedMessages.append(MessageType.Log)
     self.log = []
 
   def on_message_received(self, message):
-    entry = "Type: " + message.type.name + "Content: " + message.content + '\n'
+    entry = "Type: " + message.type.name + " Content: " + message.content + '\n'
     self.log.append(entry)
 
   def print_all(self):

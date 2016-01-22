@@ -34,10 +34,15 @@ class ConsoleMessage(IslandMessage):
   def __init__(self, content):
     IslandMessage.__init__(self, content, MessageType.Console)
 
-# class ScreenMessage(IslandMessage):
+class ScreenMessage(IslandMessage):
 
-  # def __init__(self, content):
-    # IslandMessage.__init__(self, content, MessageType.Screen_Refresh)
+  def __init__(self, content):
+    IslandMessage.__init__(self, content, MessageType.Screen_Refresh)
+
+class PlayerMessage(IslandMessage):
+
+  def __init__(self, content):
+    IslandMessage.__init__(self, content, MessageType.Player)
 
 class LogMessage(IslandMessage):
   
@@ -67,5 +72,6 @@ class MessageType(Enum):
   Console = 2
   Console_Move = 3
   Screen_Refresh = 4
+  Player = 5
   Log = 9
 

@@ -27,14 +27,13 @@ class IslandGame(object):
   # def write(self, content):
     # sys.stout.write(content)
   
-  
-  
 if __name__ == "__main__":
 
   cio = IOFactory().GetInstance()
   bus = IslandBus()
   factory = MessageFactory()
   cs = ConsoleService(bus, cio)
+  ps = PlayerService(bus)
   ls = LogService(bus, cio)
 
   game = IslandGame(bus, factory)

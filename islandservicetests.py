@@ -60,3 +60,23 @@ class TestConsoleService(unittest.TestCase):
   def on_message_received_notHandled(self):
     msg = ScreenMessage("Test screen message")
     self.cs.on_message_received(msg)
+
+class TestPlayerService(unittest.TestCase):
+
+  ps = None
+
+  def setUp(self):
+    bus = IslandBus()
+    ps = PlayerService(bus)
+
+  def test_ctor(self):
+    bus = IslandBus()
+    ps = PlayerService(bus)
+
+  def on_message_received_emptyMessage_nothingHappens(self):
+    msg = PlayerMessage("")
+    actual = self.ps.on_message_received(msg)
+
+    self.assertEqual("nothing", actual)
+
+
