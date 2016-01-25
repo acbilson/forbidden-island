@@ -1,4 +1,5 @@
 from constants import *
+from player import *
 from tile import *
 
 class Island(object):

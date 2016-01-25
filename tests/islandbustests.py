@@ -1,4 +1,6 @@
 import unittest
+import sys
+sys.path.append('..\src')
 from islandservice import *
 from islandbus import *
 from constants import *
@@ -14,8 +16,10 @@ class TestIslandBus(unittest.TestCase):
   def test_ctor(self):
     bus = IslandBus()
 
-  # When the bus sends a message that all should receive, they receive it
   def test_send_broadcastAllSubscibers(self):
+
+    """ When the bus sends a message that all subscribers should receive, they receive it """
+
     serviceForSome = TestService_MoveMessages(self.bus)
     serviceForAll = TestService_AllMessages(self.bus)
     subscribers = [serviceForSome, serviceForAll]
@@ -27,8 +31,10 @@ class TestIslandBus(unittest.TestCase):
     self.assertTrue(serviceForAll.wasCalled)
     self.assertTrue(serviceForSome.wasCalled)
 
-  # When the bus sends a message that only some should receive, some receive it
   def test_send_specificSubscribers(self):
+
+    """ When the bus sends a message that only some subscribers should receive, some receive it """
+
     serviceForSome = TestService_MoveMessages(self.bus)
     serviceForAll = TestService_AllMessages(self.bus)
     subscribers = [serviceForSome, serviceForAll]
@@ -41,6 +47,9 @@ class TestIslandBus(unittest.TestCase):
     self.assertFalse(serviceForSome.wasCalled)
 
   def test_receive_addsToQueue(self):
+
+    """ When the bus receives a message, add it to the queue """
+
     message = MoveMessage("Test move message")
     self.bus.receive(message)
 
@@ -48,8 +57,10 @@ class TestIslandBus(unittest.TestCase):
     receivedMessage = self.bus.messageQueue.get()
     self.assertTrue(message == receivedMessage)
 
-  # When the bus listens, should send all messages in the queue
   def test_listen_sendsAllMessages(self):
+
+    """ When the bus listens, should send all messages in the queue """
+
     m1 = MoveMessage("First Message")
     m2 = MoveMessage("Second Message")
     m3 = MoveMessage("Third Message")
@@ -63,6 +74,9 @@ class TestIslandBus(unittest.TestCase):
     self.assertTrue(service.wasCalled)
     self.assertEqual(3, service.callNumber)
     self.assertTrue(self.bus.messageQueue.empty())
+
+# These are services created for the sake of these tests 
+# in order to abstract content that may change
 
 class TestService_AllMessages(IslandNotifier):
   

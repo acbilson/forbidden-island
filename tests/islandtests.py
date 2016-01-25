@@ -1,6 +1,9 @@
 import unittest
+import sys
+sys.path.append('..\src')
 from island import *
 from tile import *
+from player import *
 from constants import *
 
 class TestIsland(unittest.TestCase):

@@ -1,4 +1,4 @@
-from constants import *
+from enum import Enum
 from island import *
 
 class Tile(object):
@@ -46,3 +46,34 @@ class TileSegment(object):
 
   def __ne__(self, other):
     return not self.__eq__(other)
+
+class TileName():
+  FoolsLanding = "FSL"
+  GoldGate = "GGT"
+  IronGate = "IGT"
+  BronzeGate = "BGT"
+  CopperGate = "CGT"
+  SilverGate = "SGT"
+  CoralPalace = "CLP"
+  TidalPalace = "TLP"
+  CaveOfShadows = "COS"
+  CaveOfEmbers = "COE"
+  WhisperingGarden = "WGD"
+  HowlingGarden = "HGD"
+  TempleOfTheSun = "TOS"
+  TempleOfTheMoon = "TOM"
+  MistyMarsh = "MYM"
+  Watchtower = "WTR"
+  BreakersBridge = "BKB"
+  CrimsonForest = "CFS"
+  Observatory = "OBS"
+  PhantomRock = "PMR"
+  TwilightHollow = "TLH"
+  CliffsOfAbandon = "COA"
+  DunesOfDeception = "DOD"
+  LostLagoon = "LLG"
+
+class TileStatus():
+  Raised = "   "
+  Sunken = "SNK"
+  Lost = "LST"
