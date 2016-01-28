@@ -4,6 +4,33 @@ from tile import *
 
 class Island(object):
 
+  TileNames = {
+  "FoolsLanding": "FSL",
+  "GoldGate": "GGT",
+  "IronGate": "IGT",
+  "BronzeGate": "BGT",
+  "CopperGate": "CGT",
+  "SilverGate": "SGT",
+  "CoralPalace": "CLP",
+  "TidalPalace": "TLP",
+  "CaveOfShadows": "COS",
+  "CaveOfEmbers": "COE",
+  "WhisperingGarden": "WGD",
+  "HowlingGarden": "HGD",
+  "TempleOfTheSun": "TOS",
+  "TempleOfTheMoon": "TOM",
+  "MistyMarsh": "MYM",
+  "Watchtower": "WTR",
+  "BreakersBridge": "BKB",
+  "CrimsonForest": "CFS",
+  "Observatory": "OBS",
+  "PhantomRock": "PMR",
+  "TwilightHollow": "TLH",
+  "CliffsOfAbandon": "COA",
+  "DunesOfDeception": "DOD",
+  "LostLagoon": "LLG"
+  }
+
   NameWidth = 3
   BoardWidth = 39
   EmptyTileSegment = '     '
@@ -17,13 +44,7 @@ class Island(object):
     """ randomly generates a filled board to begin play """
 
     # Randomize the indices
-
-    allNames = ["ABC", "BCD",
-                "CDE", "DEF", "EFG", "FGH", 
-                "GHI", "HIJ", "IJK", "JKL", "KLM", "LMN",
-                "MNO", "NOP", "OPQ", "PQR", "QRS", "RST",
-                "STU", "TUV", "UVW", "VWX",
-                "WXY", "XYZ"]
+    tileNames = list(self.TileNames.values())
 
     allIndices = [14, 20,
                   163, 169, 175, 181,
@@ -34,7 +55,7 @@ class Island(object):
     tiles = []
 
     for i,n in enumerate(allIndices):
-      tile = Tile(n, allNames[i], PlayerType.Empty, TileStatus.Raised)
+      tile = Tile(n, tileNames[i], PlayerType.Empty, TileStatus.Raised)
       tiles.append(tile)
 
     tileSegments = []

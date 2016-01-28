@@ -3,7 +3,6 @@ sys.path.append('C:\SourceCode\PersonalRepo\Python\PyLexLib')
 from iofactory import *
 from islandbus import *
 
-
 class IslandGame(object):
   """ Central class for the Forbidden Island game, where the game loop executes """
 

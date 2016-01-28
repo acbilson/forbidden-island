@@ -9,6 +9,7 @@ from constants import *
 class TestIsland(unittest.TestCase):
 
   """ Testing the Island class """
+
   island = None
 
   def setUp(self):
