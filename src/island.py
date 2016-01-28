@@ -31,63 +31,81 @@ class Island(object):
   "LostLagoon": "LLG"
   }
 
+  Treasure = {
+  "Empty": "|",
+  "Earth": "E",
+  "Water": "W",
+  "Air": "A",
+  "Fire": "F"
+  }
+
   NameWidth = 3
   BoardWidth = 39
   EmptyTileSegment = '     '
 
   def __init__(self):
     self.board = Board.Empty
-    self.newBoard = ""
+    self.tiles = []
 
   def generateBoard(self):
     
     """ randomly generates a filled board to begin play """
 
-    # Randomize the indices
-    tileNames = list(self.TileNames.values())
+    tileNames = self._getRandomNames()
+    self._generateTiles(tileNames)
 
+    # Splits the board into segments that can be pieced into a cohesive whole
+    tileSegments = []
+
+    # Piece the board together from a combination of the tiles and its segments 
+
+    # Add the first segment
+    firstSegment = self.board[0:self.tiles[0].name.index]
+    tileSegments.append(firstSegment)
+
+    for i in range(0, len(self.tiles)-1):
+      # Append the tile name, then the next segment
+      tileSegments.append(self.tiles[i].name.value)
+      segStart = self.tiles[i].name.index + self.NameWidth
+      segEnd = self.tiles[i+1].name.index
+      tileSegment = self.board[segStart:segEnd]
+      tileSegments.append(tileSegment)
+
+    # Add the last tile and segment
+    lastTileIndex = len(self.tiles) - 1
+    tileSegments.append(self.tiles[lastTileIndex].name.value)
+    segStart = self.tiles[lastTileIndex].name.index + self.NameWidth
+    segEnd = len(self.board)
+    lastSegment = self.board[segStart:segEnd]
+    tileSegments.append(lastSegment)
+
+    # Turn all segments into one string to create the board
+    self.board = ''.join([s for s in tileSegments])
+
+  def _getRandomNames(self):
+    # Because it's converted from a dict to list, it's in random order
+    return list(self.TileNames.values())
+
+  def _generateTiles(self, names):
+
+    # Index pattern in space between indices
+    # 14 + 6 + 
+    # 144 + 6(3x) + 
+    # 132 + 6(5x) + 
+    # 126 + 6(5x) + 
+    # 132 + 6(3x) + 
+    # 144 + 6
     allIndices = [14, 20,
-                  163, 169, 175, 181,
+                  164, 170, 176, 182,
                   314, 320, 326, 332, 338, 344,
                   470, 476, 482, 488, 494, 500,
                   632, 638, 644, 650,
                   794, 800]
-    tiles = []
 
+    # Creates a tile for every index
     for i,n in enumerate(allIndices):
-      tile = Tile(n, tileNames[i], PlayerType.Empty, TileStatus.Raised)
-      tiles.append(tile)
-
-    tileSegments = []
-
-    firstSegment = self.board[0:allIndices[0]]
-    tileSegments.append(firstSegment)
-
-    for i,t in enumerate(tiles):
-      tileSegments.append(t.name.value)
-      segStart = t.name.index + self.NameWidth
-      segEnd = tiles[i].name.index
-      segment = self.board[segStart:segEnd]
-      # print(segStart, '\t', segEnd, '\t*', segment, '*')
-      tileSegments.append(segment)
-
-    # for i in range(1, len(allIndices)-1):
-      # # Append the tile name
-      # tileSegments.append(allNames[i])
-      # # Append the next segment
-      # segStart = allIndices[i] + self.NameWidth
-      # segEnd = allIndices[i+1]
-      # tileSegment = self.board[segStart:segEnd]
-      # tileSegments.append(tileSegment)
-
-    start = len(allIndices)
-    end = len(self.board)
-    lastSegment = self.board[start:end]
-    tileSegments.append(lastSegment)
-
-    # Turn the segments into one string
-    # [print(s) for s in tileSegments]
-    self.newBoard = ''.join([s for s in tileSegments])
+      tile = Tile(n, names[i], PlayerType.Empty, TileStatus.Raised)
+      self.tiles.append(tile)
 
   def getBoard(self):
 
@@ -95,6 +113,7 @@ class Island(object):
 
     return self.board
 
+  # TODO: May simply pick this up from self.tiles later instead of generating it from the board
   def getTile(self, tileName):
 
     """ Retrieves a tile from the board by name """
@@ -109,47 +128,39 @@ class Island(object):
 
     return Tile(index=ni, name=top, player=mid, status=bot)
 
-  def updateTile(self, tileName, newTile):
+  def updateTile(self, newTile):
 
     """ Currently gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Highly
     resource intensive, but no other way so far """
 
-    indices = self._getIndexSegments(tileName)
-    self._updateBoardWithNewTile(indices, newTile)
+    segments = self._getIndexSegments(newTile, newTile.NameWidth)
+    self._updateBoardWithTile(segments, newTile)
 
-  def sinkTile(self, tileName):
+  def sinkTile(self, tileToSink):
 
-    """ Currently gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Highly
+    """ Currently gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Seems
     resource intensive, but no other way so far """
 
-    indices = self._getIndexSegments(tileName)
-    self._updateBoardWithMissingTile(indices)
+    tileToSink.sink()
 
-  def _updateBoardWithNewTile(self, indices, newTile):
-    self.board = (indices[0] + newTile.name.value + 
-                  indices[1] + newTile.player.value + 
-                  indices[2] + newTile.status.value + 
-                  indices[3])
+    segments = self._getIndexSegments(tileToSink, tileToSink.SunkenWidth)
+    self._updateBoardWithTile(segments, tileToSink)
 
-  def _updateBoardWithMissingTile(self, indices):
-    self.board = (indices[0] + self.EmptyTileSegment + 
-                  indices[1] + self.EmptyTileSegment + 
-                  indices[2] + self.EmptyTileSegment + 
-                  indices[3])
+  def _updateBoardWithTile(self, segments, newTile):
+    self.board = (segments[0] + newTile.name.value + 
+                  segments[1] + newTile.player.value + 
+                  segments[2] + newTile.status.value + 
+                  segments[3])
 
-  def _getIndexSegments(self, tileName):
+  def _getIndexSegments(self, tile, tileSpacing):
 
-    ni = self._findTileNameIndex(tileName)
-    pi = self._findTilePlayerIndex(ni)
-    si = self._findTileStatusIndex(ni)
+    leftTop = self.board[0:tile.name.index]
+    rightTop = self.board[tile.name.index+tileSpacing:tile.player.index]
+    rightMid = self.board[tile.player.index+tileSpacing:tile.status.index]
+    rightBot = self.board[tile.status.index+tileSpacing:len(self.board)]
 
-    leftTop = self.board[0:ni-1]
-    rightTop = self.board[ni+self.NameWidth+1:pi-1]
-    rightMid = self.board[pi+self.NameWidth+1:si-1]
-    rightBot = self.board[si+self.NameWidth+1:len(self.board)]
-
-    indices = (leftTop, rightTop, rightMid, rightBot)
-    return indices
+    segments = (leftTop, rightTop, rightMid, rightBot)
+    return segments
 
   def _findTileNameIndex(self, tileName):
     return self.board.index(tileName)

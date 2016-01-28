@@ -4,7 +4,10 @@ from island import *
 class Tile(object):
 
   Empty = '   '
+  Sunken = '     '
   BoardWidth = 39
+  NameWidth = 3
+  SunkenWidth = 5
 
   def __init__(self, index, name, player, status):
     self.name = TileSegment(index, name)
@@ -33,6 +36,17 @@ class Tile(object):
     if(self.name.index != 0):
       return (self.name.index, self.player.index, self.status.index)
     
+  def sink(self):
+
+    """ Changes the contents of this tile to reflect a sunken state """
+
+    self.name.value = self.Sunken
+    self.player.value = self.Sunken
+    self.status.value = self.Sunken
+    self.name.index = self.name.index - 1
+    self.player.index = self.player.index - 1
+    self.status.index = self.status.index - 1
+
 class TileSegment(object):
 
   def __init__(self, index, value):

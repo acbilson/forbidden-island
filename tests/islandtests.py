@@ -23,6 +23,7 @@ class TestIsland(unittest.TestCase):
 
   def test_island_generateBoard(self):
     self.island.generateBoard()
+    # print('\n' + self.island.board)
 
   def test_island_getTile(self):
     self.island.board = TestConstants.GetTileBoard
@@ -36,12 +37,34 @@ class TestIsland(unittest.TestCase):
 
     self.assertEqual(expected.name, actual.name)
 
+  def test_island_updateTile(self):
+    self.island.board = TestConstants.GetTileBoard
+
+    updatedTile = Tile(index=494,
+                       name=TileName.DunesOfDeception, 
+                       player=PlayerType.Pilot, 
+                       status=TileStatus.Raised)
+
+    self.island.updateTile(updatedTile)
+
+    expected = TestConstants.UpdateTileBoard
+    actual = self.island.board
+    self.assertEqual(expected, actual)
+
+
+
   def test_island_sinkTile(self):
     self.island.board = TestConstants.GetTileBoard
 
-    self.island.sinkTile(TileName.CliffsOfAbandon)
+    tileToSink = Tile(index=494,
+                      name=TileName.CliffsOfAbandon, 
+                      player=PlayerType.Engineer, 
+                      status=TileStatus.Sunken)
+
+    self.island.sinkTile(tileToSink)
 
     expected = TestConstants.SunkenBoard
+    actual = self.island.board
     self.assertEqual(expected, self.island.board)
 
 class TestTile(unittest.TestCase):
@@ -63,6 +86,24 @@ class TestTile(unittest.TestCase):
 
     self.assertEqual(10, actual)
 
+  def test_tile_sink_updatesValue(self):
+    self.tile.sink()
+    
+    self.assertEqual("     ", self.tile.name.value)
+    self.assertEqual("     ", self.tile.player.value)
+    self.assertEqual("     ", self.tile.status.value)
+
+  def test_tile_sink_updatesIndex(self):
+    ni = self.tile.name.index
+    pi = self.tile.player.index
+    si = self.tile.status.index
+    self.tile.sink()
+    
+    self.assertEqual(ni - 1, self.tile.name.index)
+    self.assertEqual(pi - 1, self.tile.player.index)
+    self.assertEqual(si - 1, self.tile.status.index)
+
+
 class TestConstants():
 
   EmptyBoard = (
@@ -70,9 +111,9 @@ class TestConstants():
   '             |   | |   |              \n' +
   '             \   / \   /              \n' +
   '                                      \n' + 
-  '      /   \ /   \ /   \ /   \\         \n' + 
-  '      |   | |   | |   | |   |         \n' + 
-  '      \   / \   / \   / \   /         \n' +
+  '       /   \ /   \ /   \ /   \\        \n' + 
+  '       |   | |   | |   | |   |        \n' + 
+  '       \   / \   / \   / \   /        \n' +
   '                                      \n' + 
   ' /   \ /   \ /   \ /   \ /   \ /   \\  \n' +
   ' |   | |   | |   | |   | |   | |   |  \n' +
@@ -95,9 +136,9 @@ class TestConstants():
   '             |   | |   |              \n' +
   '             \   / \   /              \n' +
   '                                      \n' + 
-  '      /   \ /   \ /   \ /   \\         \n' + 
-  '      |   | |   | |   | |   |         \n' + 
-  '      \   / \   / \   / \   /         \n' +
+  '       /   \ /   \ /   \ /   \\        \n' + 
+  '       |   | |   | |   | |   |        \n' + 
+  '       \   / \   / \   / \   /        \n' +
   '                                      \n' + 
   ' /   \ /   \ /   \ /   \ /   \ /   \\  \n' +
   ' |   | |   | |   | |   | |   | |   |  \n' +
@@ -120,9 +161,9 @@ class TestConstants():
   '             |   | |   |              \n' +
   '             \   / \   /              \n' +
   '                                      \n' + 
-  '      /   \ /   \ /   \ /   \\         \n' + 
-  '      |   | |   | |   | |   |         \n' + 
-  '      \   / \   / \   / \   /         \n' +
+  '       /   \ /   \ /   \ /   \\        \n' + 
+  '       |   | |   | |   | |   |        \n' + 
+  '       \   / \   / \   / \   /        \n' +
   '                                      \n' + 
   ' /   \ /   \ /   \ /   \ /   \ /   \\  \n' +
   ' |   | |   | |   | |   | |   | |   |  \n' +
@@ -145,9 +186,9 @@ class TestConstants():
   '             |   | |   |              \n' +
   '             \   / \   /              \n' +
   '                                      \n' + 
-  '      /   \ /   \ /   \ /   \\         \n' + 
-  '      |   | |   | |   | |   |         \n' + 
-  '      \   / \   / \   / \   /         \n' +
+  '       /   \ /   \ /   \ /   \\        \n' + 
+  '       |   | |   | |   | |   |        \n' + 
+  '       \   / \   / \   / \   /        \n' +
   '                                      \n' + 
   ' /   \ /   \ /   \ /   \ /   \ /   \\  \n' +
   ' |   | |   | |   | |   | |   | |   |  \n' +
