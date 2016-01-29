@@ -38,7 +38,7 @@ class TestIslandBus(unittest.TestCase):
     serviceForSome = TestService_MoveMessages(self.bus)
     serviceForAll = TestService_AllMessages(self.bus)
     subscribers = [serviceForSome, serviceForAll]
-    message = ScreenMessage("Test screen message")
+    message = TestMessage("Test screen message")
 
     self.bus.send(message)
 
@@ -75,6 +75,16 @@ class TestIslandBus(unittest.TestCase):
     self.assertEqual(3, service.callNumber)
     self.assertTrue(self.bus.messageQueue.empty())
 
+  def test_listen_receivesExitMessage_returnsExitCode(self):
+    
+    """ When the bus receives an exit message, should return an exit code """
+
+    self.bus.receive(ExitMessage())
+
+    actual = self.bus.listen()
+
+    self.assertEqual(1, actual)
+
 # These are services created for the sake of these tests 
 # in order to abstract content that may change
 
@@ -99,3 +109,8 @@ class TestService_MoveMessages(IslandNotifier):
   def on_message_received(self, message):
     self.wasCalled = True
     self.callNumber = self.callNumber + 1
+
+class TestMessage(IslandMessage):
+
+  def __init__(self, content):
+    IslandMessage.__init__(self, content, MessageType.Test)

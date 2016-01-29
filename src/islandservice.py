@@ -63,16 +63,23 @@ class ConsoleService(IslandNotifier):
 
   def read_playercount(self):
     self.io.write("How many players will be playing? ")
-    count = self.io.read()
+    count = int(self.io.read())
     self.bus.receive(PlayerMessage(count))
     return count
  
   def read_playertype(self, count):
     self.io.write("Engineer, Pilot, Diver, Messenger, Explorer, Navigator\n")
-    for i in range(0, int(count)):
+    playerRequestCount = 0
+    while playerRequestCount < count:
       self.io.write("Choose a player type: ")
       playerType = self.io.read()
-      self.bus.receive(PlayerMessage(playerType))
+      playerType.replace('\n', '')
+      if not playerType in ["Engineer", "Pilot", "Diver", "Messenger", "Explorer", "Navigator"]:
+        self.io.write("Not a valid playe type.\n")
+      else:
+        request = Request("Create", { "type": playerType })
+        self.bus.receive(PlayerMessage(request))
+        playerRequestCount = playerRequestCount + 1
    
   def on_message_received(self, message):
     options = {
@@ -93,8 +100,10 @@ class PlayerService(IslandNotifier):
     self.players = []
 
   def create_players(self, message):
-    for i in range(0, int(message.content)):
-      self.players.append(Player())
+    request = message.content
+    if request.header == "Create":
+      playerType = request.content['type']
+      self.players.append(Player(playerType))
 
     self.bus.receive(LogMessage(str(message.content) + " players created"))
     

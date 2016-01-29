@@ -51,8 +51,6 @@ class TestIsland(unittest.TestCase):
     actual = self.island.board
     self.assertEqual(expected, actual)
 
-
-
   def test_island_sinkTile(self):
     self.island.board = TestConstants.GetTileBoard
 

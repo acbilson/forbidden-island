@@ -128,6 +128,10 @@ class Island(object):
 
     return Tile(index=ni, name=top, player=mid, status=bot)
 
+  # TODO: implement
+  def updateCursor(self, cursor):
+    pass
+
   def updateTile(self, newTile):
 
     """ Currently gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Highly

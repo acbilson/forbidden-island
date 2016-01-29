@@ -10,14 +10,23 @@ class IslandBus(object):
     self.messageQueue = Queue()
 
   def listen(self):
+
     """ loops through the message queue, sending messages to the appropriate subscribers """
+
+    exitCode = 0
+
     while not self.messageQueue.empty():
     
       message = self.messageQueue.get()
+      exitCode = self._isExitMessage(message)
       self.send(message)
 
+    return exitCode
+
   def send(self, message):
+
     """ Sends a message to the appropriate subscribers for that message type """
+
     subscribers = self._get_subscribers_to_notify(message)
 
     for s in subscribers:
@@ -35,6 +44,12 @@ class IslandBus(object):
     for its specified message types, or all if none specified """
 
     self.subscribers.append(subscriber)
+
+  def _isExitMessage(self, message):
+    if message.type == MessageType.Exit:
+      return 1
+    else:
+      return 0
 
   def _get_subscribers_to_notify(self, message):
 

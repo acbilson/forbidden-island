@@ -4,8 +4,8 @@ class Player(object):
 
   """ This class represents one of the players(pawns) on the board """
 
-  def __init__(self):
-    pass
+  def __init__(self, type):
+    self.type = type
 
 class PlayerAction(Enum):
   Skip = 0
@@ -23,5 +23,3 @@ class PlayerType():
   Messenger = "MSG"
   Explorer = "EXP"
   Navigator = "NAV"
-
-

@@ -13,16 +13,18 @@ class IslandGame(object):
   def play(self):
     self.bus.receive(StartMessage())
 
-    while(True):
-
-      self.bus.listen()
-      break
+    exitCode = 0
+    while(exitCode == 0):
+      exitCode = self.bus.listen()
   
 if __name__ == "__main__":
 
   cio = IOFactory().GetInstance()
   bus = IslandBus()
   factory = MessageFactory()
+
+  # Each service registers with the bus within their ctor
+  # is = IslandService(bus, island)
   cs = ConsoleService(bus, cio)
   ps = PlayerService(bus)
   ls = LogService(bus, cio)
