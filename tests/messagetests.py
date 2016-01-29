@@ -17,10 +17,3 @@ class TestBroadcastMessage(unittest.TestCase):
       message = BroadcastMessage("Test broadcast")
       self.assertEqual("Test broadcast", message.content)
       self.assertEqual(MessageType.All, message.type)
-
-class TestMoveMessage(unittest.TestCase):
-
-    def test_ctor(self):
-      message = MoveMessage("Up")
-      self.assertEqual("Up", message.content)
-      self.assertEqual(MessageType.Console_Move, message.type)

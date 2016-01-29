@@ -23,7 +23,7 @@ class TestIslandBus(unittest.TestCase):
     serviceForSome = TestService_MoveMessages(self.bus)
     serviceForAll = TestService_AllMessages(self.bus)
     subscribers = [serviceForSome, serviceForAll]
-    message = MoveMessage("Test move message")
+    message = TestMessage("Test move message")
 
     self.bus.send(message)
 
@@ -38,7 +38,7 @@ class TestIslandBus(unittest.TestCase):
     serviceForSome = TestService_MoveMessages(self.bus)
     serviceForAll = TestService_AllMessages(self.bus)
     subscribers = [serviceForSome, serviceForAll]
-    message = TestMessage("Test screen message")
+    message = ConsoleMessage("Test screen message")
 
     self.bus.send(message)
 
@@ -50,7 +50,7 @@ class TestIslandBus(unittest.TestCase):
 
     """ When the bus receives a message, add it to the queue """
 
-    message = MoveMessage("Test move message")
+    message = TestMessage("Test move message")
     self.bus.receive(message)
 
     self.assertFalse(self.bus.messageQueue.empty())
@@ -61,9 +61,9 @@ class TestIslandBus(unittest.TestCase):
 
     """ When the bus listens, should send all messages in the queue """
 
-    m1 = MoveMessage("First Message")
-    m2 = MoveMessage("Second Message")
-    m3 = MoveMessage("Third Message")
+    m1 = TestMessage("First Message")
+    m2 = TestMessage("Second Message")
+    m3 = TestMessage("Third Message")
     self.bus.receive(m1)
     self.bus.receive(m2)
     self.bus.receive(m3)
@@ -102,7 +102,7 @@ class TestService_MoveMessages(IslandNotifier):
   
   def __init__(self, bus):
     IslandNotifier.__init__(self, bus)
-    self.subscribedMessages.append(MessageType.Console_Move)
+    self.subscribedMessages.append(MessageType.Test)
     self.wasCalled = False
     self.callNumber = 0
    

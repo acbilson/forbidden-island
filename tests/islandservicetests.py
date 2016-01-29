@@ -3,6 +3,10 @@ import sys
 sys.path.append('..\src')
 from islandbus import *
 from islandservice import *
+from consoleservice import *
+from playerservice import *
+from screenservice import *
+from logservice import *
 from constants import *
 from message import *
 import sys
@@ -22,7 +26,7 @@ class TestIslandNotifier(unittest.TestCase):
     notifier = IslandNotifier(bus)
 
   def test_notify(self):
-    msg = MoveMessage("Up")
+    msg = TestMessage("Up")
     self.notifier.notify(msg)
 
     self.assertFalse(self.notifier.bus.messageQueue.empty())
@@ -81,4 +85,9 @@ class TestPlayerService(unittest.TestCase):
 
     self.assertEqual("nothing", actual)
 
+# Message for these tests
 
+class TestMessage(IslandMessage):
+
+  def __init__(self, content):
+    IslandMessage.__init__(self, content, MessageType.Test)

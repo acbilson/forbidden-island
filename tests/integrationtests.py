@@ -2,6 +2,10 @@ import unittest
 import sys
 sys.path.append('..\src')
 from islandgame import *
+from consoleservice import *
+from playerservice import *
+from logservice import *
+from screenservice import *
 from iofactory import FakeIO
 
 class TestGame(unittest.TestCase):

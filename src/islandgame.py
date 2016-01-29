@@ -2,6 +2,7 @@ import sys
 sys.path.append('C:\SourceCode\PersonalRepo\Python\PyLexLib')
 from iofactory import *
 from islandbus import *
+from island import *
 
 class IslandGame(object):
   """ Central class for the Forbidden Island game, where the game loop executes """
@@ -25,7 +26,9 @@ if __name__ == "__main__":
   factory = MessageFactory()
 
   # Each service registers with the bus within their ctor
-  # is = IslandService(bus, island)
+  island = Island()
+  island.generateBoard()
+  ss = ScreenService(bus, island, cio)
   cs = ConsoleService(bus, cio)
   ps = PlayerService(bus)
   ls = LogService(bus, cio)
