@@ -3,6 +3,7 @@ py -m unittest islandtests  `
                islandservicetests `
                messagetests `
                playertests `
-               serializationtests
+               serializationtests `
+               integrationtests
 
                #gametests `

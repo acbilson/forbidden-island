@@ -52,6 +52,7 @@ class ConsoleService(IslandNotifier):
     self.read_username()
     count = self.read_playercount()
     self.read_playertype(count)
+    self.bus.receive(ConsoleMessage("Initialization Complete"))
 
   def write_welcome(self):
     self.io.write("Welcome to Forbidden Island!\n\n")
@@ -64,7 +65,6 @@ class ConsoleService(IslandNotifier):
   def read_playercount(self):
     self.io.write("How many players will be playing? ")
     count = int(self.io.read())
-    self.bus.receive(PlayerMessage(count))
     return count
  
   def read_playertype(self, count):
@@ -73,14 +73,17 @@ class ConsoleService(IslandNotifier):
     while playerRequestCount < count:
       self.io.write("Choose a player type: ")
       playerType = self.io.read()
-      playerType.replace('\n', '')
+      playerType = playerType.replace('\n', '')
       if not playerType in ["Engineer", "Pilot", "Diver", "Messenger", "Explorer", "Navigator"]:
-        self.io.write("Not a valid playe type.\n")
+        self.io.write("Not a valid player type.\n")
       else:
-        request = Request("Create", { "type": playerType })
-        self.bus.receive(PlayerMessage(request))
+        self._sendPlayerCreateRequest(playerType)
         playerRequestCount = playerRequestCount + 1
-   
+
+  def _sendPlayerCreateRequest(self, playerType):
+    request = Request("Create", { "type": playerType })
+    self.bus.receive(PlayerMessage(request))
+
   def on_message_received(self, message):
     options = {
       MessageType.Initialize: self.initialize
@@ -139,7 +142,7 @@ class LogService(IslandNotifier):
     self.log = []
 
   def on_message_received(self, message):
-    entry = "Type: " + message.type.name + " Content: " + message.content + '\n'
+    entry = "Type: " + message.type.name + " Content: " + str(message.content) + '\n'
     self.log.append(entry)
 
   def print_all(self):

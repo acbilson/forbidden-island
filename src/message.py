@@ -20,6 +20,12 @@ class IslandMessage(object):
     self.content = content
     self.type = msgType
 
+  def __str__(self):
+    return "M(" + str(self.type.value) + "," + str(self.content) + ")"
+
+  def __repr__(self):
+    return self.__str__()
+
 class BroadcastMessage(IslandMessage):
   
   def __init__(self, content):
@@ -60,6 +66,12 @@ class Request(object):
   def __init__(self, header, content):
     self.header = header
     self.content = content
+
+  def __str__(self):
+    return "R(" + str(self.header) + "," + str(self.content) + ")"
+
+  def __repr__(self):
+    return self.__str___()
 
 # class Response(object):
   

@@ -16,6 +16,7 @@ class IslandGame(object):
     exitCode = 0
     while(exitCode == 0):
       exitCode = self.bus.listen()
+      exitCode = 1
   
 if __name__ == "__main__":
 

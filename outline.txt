@@ -1,9 +1,7 @@
 TODO:
 
   Investigate curses library - could be helpful for display in terminal
-  Investigate queue library - use for the island bus?
   Investigate threading library - when working with queue
-
 
 prints welcome screen
 
@@ -24,6 +22,7 @@ prints players screen
     2. Pilot 
     etc.
 
+  ConsoleService -> Create players -> PlayerService
 
 Messages
 ---------------------

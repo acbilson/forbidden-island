@@ -56,7 +56,7 @@ class TestRequestSerialization(unittest.TestCase):
 
   def test_requestDecoder_decodesMessageFromJSON(self):
 
-    jsonRequest = '{"__Request__": true, "header": "Create", "content": "{ \\"type\\": \\"Diver\\" }" }'
+    jsonRequest = '{"__Request__": true, "content": "{\\"type\\": \\"Diver\\"}", "header": "Create"}'
 
     decoder = RequestDecoder()
     actual = json.loads(jsonRequest, object_hook=decoder.as_request)
