@@ -1,5 +1,6 @@
 from islandservice import *
 
+# TODO: descend from IslandSubscriber instead
 class LogService(IslandNotifier):
   
   def __init__(self, bus, io):

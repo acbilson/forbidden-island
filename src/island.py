@@ -4,6 +4,9 @@ from tile import *
 
 class Island(object):
 
+  # TODO: Am I really sure I want this on the Island object?  
+  # I'd like to keep the dictionary, but maybe it should
+  # return to constant.py 
   TileNames = {
   "FoolsLanding": "FSL",
   "GoldGate": "GGT",
@@ -114,6 +117,7 @@ class Island(object):
     return self.board
 
   # TODO: May simply pick this up from self.tiles later instead of generating it from the board
+  #       Example: [t for t in self.tiles if t.name == tileName]
   def getTile(self, tileName):
 
     """ Retrieves a tile from the board by name """
@@ -128,13 +132,14 @@ class Island(object):
 
     return Tile(index=ni, name=top, player=mid, status=bot)
 
-  # TODO: implement
+  # TODO: implement.  Should be some way of stripping the cursor's location left/right, placing the cursor in the new
+  # spot, then snapping the two ends back on.  Similar to updateTile, only fewer segments
   def updateCursor(self, cursor):
     pass
 
   def updateTile(self, newTile):
 
-    """ Currently gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Highly
+    """ Gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Highly
     resource intensive, but no other way so far """
 
     segments = self._getIndexSegments(newTile, newTile.NameWidth)
@@ -142,7 +147,7 @@ class Island(object):
 
   def sinkTile(self, tileToSink):
 
-    """ Currently gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Seems
+    """ Gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Seems
     resource intensive, but no other way so far """
 
     tileToSink.sink()

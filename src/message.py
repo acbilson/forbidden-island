@@ -12,6 +12,7 @@ class MessageFactory(object):
     else:
       return BroadcastMessage()
 
+# TODO: Consolidate messages; there are more than I need or use.
 class IslandMessage(object):
 
   """ Base message class """

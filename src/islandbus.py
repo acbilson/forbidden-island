@@ -11,13 +11,16 @@ class IslandBus(object):
 
   def listen(self):
 
-    """ loops through the message queue, sending messages to the appropriate subscribers """
+    """ loops through the message queue, sending messages to the appropriate subscribers.  Unlike an update() command in
+    the Observer pattern, this will continue to pass messages that are added mid-stream until no further messages are
+    passed """
 
     exitCode = 0
 
     while not self.messageQueue.empty():
     
       message = self.messageQueue.get()
+      # Exit code will only execute when all messages have been processed
       exitCode = self._isExitMessage(message)
       self.send(message)
 

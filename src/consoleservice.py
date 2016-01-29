@@ -2,6 +2,8 @@ from islandservice import *
 
 class ConsoleService(IslandNotifier):
   
+  # TODO: pass a ConsoleParser class to handle input
+  # TODO: pass a Initialize/Exit class to handle start/end?
   def __init__(self, bus, io):
     IslandNotifier.__init__(self, bus)
     self.subscribedMessages.extend([MessageType.Console, MessageType.Initialize])

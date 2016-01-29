@@ -17,6 +17,7 @@ class IslandGame(object):
     exitCode = 0
     while(exitCode == 0):
       exitCode = self.bus.listen()
+      # TODO: Remove when an exit code starts to return
       exitCode = 1
   
 if __name__ == "__main__":

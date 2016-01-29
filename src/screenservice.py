@@ -10,6 +10,7 @@ class ScreenService(IslandNotifier):
 
   def render(self, message):
     if message.content == "Initialization Complete":
+
       # Add players to the board at their appropriate spots
       # Let ConsoleService know to query the user for the player's next action
       self.io.write("\n\tLet the game begin!\n\n")

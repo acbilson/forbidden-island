@@ -21,5 +21,3 @@ class CardType(Enum):
   Water = 5
   Air = 6
   Fire = 7
-
-
