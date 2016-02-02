@@ -1,7 +1,6 @@
 from islandservice import *
 
-# TODO: descend from IslandSubscriber instead
-class LogService(IslandNotifier):
+class LogService(IslandSubscriber):
   
   def __init__(self, bus, io):
     IslandNotifier.__init__(self, bus)
@@ -11,7 +10,7 @@ class LogService(IslandNotifier):
     self.log = []
 
   def on_message_received(self, message):
-    entry = message.type.name + " Content: " + str(message.content) + '\n'
+    entry = message.type.name + " Content: " + str(message.request) + '\n'
     self.log.append(entry)
 
   def print_all(self):

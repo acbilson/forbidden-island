@@ -4,44 +4,6 @@ from tile import *
 
 class Island(object):
 
-  # TODO: Am I really sure I want this on the Island object?  
-  # I'd like to keep the dictionary, but maybe it should
-  # return to constant.py 
-  TileNames = {
-  "FoolsLanding": "FSL",
-  "GoldGate": "GGT",
-  "IronGate": "IGT",
-  "BronzeGate": "BGT",
-  "CopperGate": "CGT",
-  "SilverGate": "SGT",
-  "CoralPalace": "CLP",
-  "TidalPalace": "TLP",
-  "CaveOfShadows": "COS",
-  "CaveOfEmbers": "COE",
-  "WhisperingGarden": "WGD",
-  "HowlingGarden": "HGD",
-  "TempleOfTheSun": "TOS",
-  "TempleOfTheMoon": "TOM",
-  "MistyMarsh": "MYM",
-  "Watchtower": "WTR",
-  "BreakersBridge": "BKB",
-  "CrimsonForest": "CFS",
-  "Observatory": "OBS",
-  "PhantomRock": "PMR",
-  "TwilightHollow": "TLH",
-  "CliffsOfAbandon": "COA",
-  "DunesOfDeception": "DOD",
-  "LostLagoon": "LLG"
-  }
-
-  Treasure = {
-  "Empty": "|",
-  "Earth": "E",
-  "Water": "W",
-  "Air": "A",
-  "Fire": "F"
-  }
-
   NameWidth = 3
   BoardWidth = 39
   EmptyTileSegment = '     '
@@ -87,7 +49,7 @@ class Island(object):
 
   def _getRandomNames(self):
     # Because it's converted from a dict to list, it's in random order
-    return list(self.TileNames.values())
+    return list(Constant.TileNames.values())
 
   def _generateTiles(self, names):
 
@@ -107,7 +69,7 @@ class Island(object):
 
     # Creates a tile for every index
     for i,n in enumerate(allIndices):
-      tile = Tile(n, names[i], PlayerType.Empty, TileStatus.Raised)
+      tile = Tile(n, names[i], Constant.PlayerType["Empty"], Constant.TileStatus["Raised"])
       self.tiles.append(tile)
 
   def getBoard(self):
@@ -116,11 +78,29 @@ class Island(object):
 
     return self.board
 
-  # TODO: May simply pick this up from self.tiles later instead of generating it from the board
-  #       Example: [t for t in self.tiles if t.name == tileName]
   def getTile(self, tileName):
 
     """ Retrieves a tile from the board by name """
+
+    tile = self._get_tile_by_list(tileName)
+    if tile == None:
+      tile = self._get_tile_by_index(tileName)
+
+    return tile
+
+  def _get_tile_by_list(self, tileName):
+
+    """ Retrieves a tile from the tile list - faster """
+
+    tiles = [t for t in self.tiles if t.name.value == tileName]
+    if len(tiles) > 0:
+      return tiles[0]
+    else:
+      return None
+
+  def _get_tile_by_index(self, tileName):
+    
+    """ Retrieves a tile from the board by name - slower but necessary if board hasn't been generated """
 
     ni = self._findTileNameIndex(tileName)
     pi = self._findTilePlayerIndex(ni)

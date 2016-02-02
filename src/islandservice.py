@@ -36,9 +36,8 @@ class IslandSubscriber(object):
     """ Log a report if a message is received which does not meet any of the expected criteria.  This is being used to
     standardize the way all services handle messages they receive but do not act upon """
 
-    errorMsg = str(type(self)) + " did nothing with message " + message.type.name + " with " + str(message.content)
-    self.bus.receive(LogMessage(errorMsg))
-    pass
+    errorMsg = str(type(self)) + " did nothing with message " + message.type.name + " with " + str(message.request)
+    self.bus.receive(LogMessage(Request("Error", errorMsg)))
 
 class IslandNotifier(IslandSubscriber):
 

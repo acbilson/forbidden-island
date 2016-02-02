@@ -9,12 +9,12 @@ class PlayerService(IslandNotifier):
     self.players = []
 
   def create_players(self, message):
-    request = message.content
-    if request.header == "Create":
-      playerType = request.content['type']
+    if message.request.header == "Create":
+      playerType = message.request.content['type']
       self.players.append(Player(playerType))
 
-    self.bus.receive(LogMessage(str(message.content) + " players created"))
+    message = LogMessage(Request("Info", str(message.request.content) + " players created"))
+    self.bus.receive(message)
    
   def on_message_received(self, message):
     options = {

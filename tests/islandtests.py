@@ -25,25 +25,33 @@ class TestIsland(unittest.TestCase):
     self.island.generateBoard()
     # print('\n' + self.island.board)
 
-  def test_island_getTile(self):
+  def test_island_getTile_beforeTilesAreGenerated(self):
     self.island.board = TestConstants.GetTileBoard
 
-    actual = self.island.getTile(TileName.CliffsOfAbandon)
+    actual = self.island.getTile(Constant.TileNames["CliffsOfAbandon"])
 
     expected = Tile(index=494,
-                    name=TileName.CliffsOfAbandon, 
-                    player=PlayerType.Engineer, 
-                    status=TileStatus.Sunken)
+                    name=Constant.TileNames["CliffsOfAbandon"], 
+                    player=Constant.PlayerType["Engineer"], 
+                    status=Constant.TileStatus["Sunken"])
 
     self.assertEqual(expected.name, actual.name)
+
+  def test_island_getTile_afterTilesAreGenerated(self):
+
+    self.island.generateBoard()
+
+    actual = self.island.getTile(Constant.TileNames["CliffsOfAbandon"])
+
+    self.assertEqual("COA", actual.name.value)
 
   def test_island_updateTile(self):
     self.island.board = TestConstants.GetTileBoard
 
     updatedTile = Tile(index=494,
-                       name=TileName.DunesOfDeception, 
-                       player=PlayerType.Pilot, 
-                       status=TileStatus.Raised)
+                       name=Constant.TileNames["DunesOfDeception"], 
+                       player=Constant.PlayerType["Pilot"], 
+                       status=Constant.TileStatus["Raised"])
 
     self.island.updateTile(updatedTile)
 
@@ -55,9 +63,9 @@ class TestIsland(unittest.TestCase):
     self.island.board = TestConstants.GetTileBoard
 
     tileToSink = Tile(index=494,
-                      name=TileName.CliffsOfAbandon, 
-                      player=PlayerType.Engineer, 
-                      status=TileStatus.Sunken)
+                      name=Constant.TileNames["CliffsOfAbandon"], 
+                      player=Constant.PlayerType["Engineer"], 
+                      status=Constant.TileStatus["Sunken"])
 
     self.island.sinkTile(tileToSink)
 
@@ -71,7 +79,8 @@ class TestTile(unittest.TestCase):
   tile = None
 
   def setUp(self):
-    self.tile = Tile(10, TileName.DunesOfDeception, PlayerType.Engineer, TileStatus.Raised)
+    self.tile = Tile(10, Constant.TileNames["DunesOfDeception"], Constant.PlayerType["Engineer"],
+    Constant.TileStatus["Raised"])
 
   def test_tile_getIndices(self):
     actual = self.tile.getIndices()

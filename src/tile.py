@@ -23,6 +23,12 @@ class Tile(object):
   def __ne__(self, other):
     return not self.__eq__(other)
 
+  def __str__(self):
+    return "T(Name: " + str(self.name) + ", Player:" + str(self.player) + ", Status:" + str(self.status) + ")"
+
+  def __repr__(self):
+    return self.__str__()
+
   def getNameIndex(self):
     return self.name.index;
 
@@ -61,33 +67,8 @@ class TileSegment(object):
   def __ne__(self, other):
     return not self.__eq__(other)
 
-class TileName():
-  FoolsLanding = "FSL"
-  GoldGate = "GGT"
-  IronGate = "IGT"
-  BronzeGate = "BGT"
-  CopperGate = "CGT"
-  SilverGate = "SGT"
-  CoralPalace = "CLP"
-  TidalPalace = "TLP"
-  CaveOfShadows = "COS"
-  CaveOfEmbers = "COE"
-  WhisperingGarden = "WGD"
-  HowlingGarden = "HGD"
-  TempleOfTheSun = "TOS"
-  TempleOfTheMoon = "TOM"
-  MistyMarsh = "MYM"
-  Watchtower = "WTR"
-  BreakersBridge = "BKB"
-  CrimsonForest = "CFS"
-  Observatory = "OBS"
-  PhantomRock = "PMR"
-  TwilightHollow = "TLH"
-  CliffsOfAbandon = "COA"
-  DunesOfDeception = "DOD"
-  LostLagoon = "LLG"
+  def __str__(self):
+    return "[" + str(self.index) + ", " + str(self.value) + "]"
 
-class TileStatus():
-  Raised = "   "
-  Sunken = "SNK"
-  Lost = "LST"
+  def __repr__(self):
+    return __str__(self)

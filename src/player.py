@@ -6,20 +6,3 @@ class Player(object):
 
   def __init__(self, type):
     self.type = type
-
-class PlayerAction(Enum):
-  Skip = 0
-  Move = 1
-  ShoreUp = 2
-  TradeCard = 3
-  UseCard = 4
-  CaptureTreasure = 5
-  
-class PlayerType():
-  Empty = "   "
-  Engineer = "ENG"
-  Pilot = "PLT"
-  Diver = "DVR"
-  Messenger = "MSG"
-  Explorer = "EXP"
-  Navigator = "NAV"

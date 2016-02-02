@@ -1,3 +1,4 @@
+from constants import *
 from islandservice import *
 
 class ScreenService(IslandNotifier):
@@ -8,21 +9,31 @@ class ScreenService(IslandNotifier):
     self.island = island
     self.io = cio
 
+  def initialize(self, message):
+    self.io.write("Initialized")
+
   def render(self, message):
-    if message.content == "Initialization Complete":
+    if message.request.header == "Initialization Complete":
 
       # Add players to the board at their appropriate spots
       # Let ConsoleService know to query the user for the player's next action
       self.io.write("\n\tLet the game begin!\n\n")
       self.io.write(self.island.board)
 
-    elif message.content == "Render":
+    elif message.request.header == "Render":
       self.io.write(self.island.board)
 
   def on_message_received(self, message):
     options = {
-      MessageType.Console : self.render
+      MessageType.Screen: self.render,
+      MessageType.Console: self.initialize
     }
 
     execute = options.get(message.type, self.nothing)
     execute(message)
+
+def InitializeCommand(object):
+
+  def execute(self, message):
+    print("Starting now!")
+

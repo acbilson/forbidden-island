@@ -2,6 +2,10 @@ import sys
 sys.path.append('C:\SourceCode\PersonalRepo\Python\PyLexLib')
 from iofactory import *
 from islandbus import *
+from screenservice import *
+from consoleservice import *
+from playerservice import *
+from logservice import *
 from island import *
 
 class IslandGame(object):

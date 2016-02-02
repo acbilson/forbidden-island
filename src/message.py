@@ -6,8 +6,8 @@ class MessageFactory(object):
   def __init__(self):
     self.moveContent = ['Up', 'Down', 'Left', 'Right']
   
-  def get_message(self, content):
-    if content in self.moveContent:
+  def get_message(self, request):
+    if request in self.moveContent:
       return ConsoleMessage()
     else:
       return BroadcastMessage()
@@ -17,59 +17,54 @@ class IslandMessage(object):
 
   """ Base message class """
 
-  def __init__(self, content, msgType):
-    self.content = content
+  def __init__(self, msgType, request=None):
+    self.request = request
     self.type = msgType
 
   def __str__(self):
-    return "M(" + str(self.type.value) + "," + str(self.content) + ")"
+    return "M(" + str(self.type.value) + "," + str(self.request) + ")"
 
   def __repr__(self):
     return self.__str__()
 
-class BroadcastMessage(IslandMessage):
-  
-  def __init__(self, content):
-    IslandMessage.__init__(self, content, MessageType.All)
-
 class MoveMessage(IslandMessage):
 
-  def __init__(self, content):
-    IslandMessage.__init__(self, content, MessageType.Console_Move)
+  def __init__(self, request):
+    IslandMessage.__init__(self, MessageType.Console_Move, request)
 
 class ConsoleMessage(IslandMessage):
 
-  def __init__(self, content):
-    IslandMessage.__init__(self, content, MessageType.Console)
+  def __init__(self, request):
+    IslandMessage.__init__(self, MessageType.Console, request)
 
 class ScreenMessage(IslandMessage):
 
-  def __init__(self, content):
-    IslandMessage.__init__(self, content, MessageType.Screen)
+  def __init__(self, request):
+    IslandMessage.__init__(self, MessageType.Screen, request)
 
 class PlayerMessage(IslandMessage):
 
-  def __init__(self, content):
-    IslandMessage.__init__(self, content, MessageType.Player)
+  def __init__(self, request):
+    IslandMessage.__init__(self, MessageType.Player, request)
 
 class LogMessage(IslandMessage):
   
-  def __init__(self, content):
-    IslandMessage.__init__(self, content, MessageType.Log)
+  def __init__(self, request):
+    IslandMessage.__init__(self, MessageType.Log, request)
 
 class StartMessage(IslandMessage):
 
   def __init__(self):
-    IslandMessage.__init__(self, "Starting...", MessageType.Initialize)
+    IslandMessage.__init__(self, MessageType.Initialize, Request("Starting..."))
 
 class ExitMessage(IslandMessage):
 
   def __init__(self):
-    IslandMessage.__init__(self, "Exiting...", MessageType.Exit)
+    IslandMessage.__init__(self, MessageType.Exit, Request("Exiting..."))
 
 class Request(object):
 
-  def __init__(self, header, content):
+  def __init__(self, header, content=None):
     self.header = header
     self.content = content
 

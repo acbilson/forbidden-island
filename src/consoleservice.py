@@ -25,12 +25,14 @@ class ConsoleService(IslandNotifier):
   def read_username(self):
     self.io.write("What is your name? ")
     name = self.io.read()
-    self.bus.receive(LogMessage("player's name is: " + name))
+    message = LogMessage(Request("Info", "Player's Name is: " + name))
+    self.bus.receive(message)
 
   def read_playercount(self):
     self.io.write("How many players will be playing? ")
     count = int(self.io.read())
-    self.bus.receive(LogMessage(str(count) + " players should be created"))
+    message = LogMessage(Request("Info", str(count) + "players should be created"))
+    self.bus.receive(message)
     return count
  
   def read_playertype(self, count):
@@ -48,8 +50,8 @@ class ConsoleService(IslandNotifier):
 
   def _sendPlayerCreateRequest(self, playerType):
     request = Request("Create", { "type": playerType })
-    self.bus.receive(PlayerMessage(request))
-    self.bus.receive(LogMessage("Player type selected: " + str(playerType)))
+    message = PlayerMessage(request)
+    self.bus.receive(message)
 
   def on_message_received(self, message):
     options = {
@@ -59,3 +61,4 @@ class ConsoleService(IslandNotifier):
     execute = options.get(message.type, self.nothing)
     response = execute(message)
     return response
+

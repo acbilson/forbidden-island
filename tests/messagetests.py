@@ -7,13 +7,6 @@ from message import *
 class TestIslandMessage(unittest.TestCase):
 
     def test_ctor(self):
-      message = IslandMessage("test content", MessageType.All)
-      self.assertEqual("test content", message.content)
-      self.assertEqual(MessageType.All, message.type)
-
-class TestBroadcastMessage(unittest.TestCase):
-
-    def test_ctor(self):
-      message = BroadcastMessage("Test broadcast")
-      self.assertEqual("Test broadcast", message.content)
+      message = IslandMessage(MessageType.All, Request("test content"))
+      self.assertIsNotNone(message.request)
       self.assertEqual(MessageType.All, message.type)

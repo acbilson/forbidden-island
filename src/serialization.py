@@ -5,7 +5,7 @@ class MessageEncoder(json.JSONEncoder):
 
   def default(self, obj):
     if isinstance(obj, IslandMessage):
-      return {"__IslandMessage__": True, "content": obj.content, "type": obj.type.value}
+      return {"__IslandMessage__": True, "request": obj.request, "type": obj.type.value}
     else:
       return json.JSONEncoder.default(self, obj)
 
@@ -22,17 +22,17 @@ class MessageDecoder():
   def _get_by_message_type(self, dct):
     msgType = dct.get("type")
     if msgType == MessageType.Console.value:
-      return ConsoleMessage(dct['content'])
+      return ConsoleMessage(dct['request'])
     elif msgType == MessageType.Initialize.value:
-      return StartMessage(dct['content'])
+      return StartMessage(dct['request'])
     elif msgType == MessageType.Exit.value:
-      return ExitMessage(dct['content'])
+      return ExitMessage(dct['request'])
     elif msgType == MessageType.Log.value:
-      return LogMessage(dct['content'])
+      return LogMessage(dct['request'])
     elif msgType == MessageType.Player.value:
-      return PlayerMessage(dct['content'])
+      return PlayerMessage(dct['request'])
     else:
-      return IslandMessage(dct['content'], MessageType.All)
+      return IslandMessage(dct['request'], MessageType.All)
       
 class PlayerEncoder(json.JSONEncoder):
 
@@ -65,7 +65,6 @@ class RequestDecoder():
 
   def as_request(self, dct):
     if '__Request__' in dct:
-      content = json.loads(dct['content'])
-      return Request(dct['header'], content)
+      return Request(dct['header'], dct['content'])
     else:
       return dct;
