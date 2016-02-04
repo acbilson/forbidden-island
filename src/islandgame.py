@@ -21,21 +21,20 @@ class IslandGame(object):
     exitCode = 0
     while(exitCode == 0):
       exitCode = self.bus.listen()
-      # TODO: Remove when an exit code starts to return
-      exitCode = 1
+      self.bus.receive(ExitMessage())
   
 if __name__ == "__main__":
 
   cio = IOFactory().GetInstance()
   bus = IslandBus()
   factory = MessageFactory()
+  island = Island()
+  playerDeck = PlayerDeck()
 
   # Each service registers with the bus within their ctor
-  island = Island()
-  island.generateBoard()
   ss = ScreenService(bus, island, cio)
   cs = ConsoleService(bus, cio)
-  ps = PlayerService(bus)
+  ps = PlayerService(bus, playerDeck)
   ls = LogService(bus, cio)
 
   game = IslandGame(bus, factory)

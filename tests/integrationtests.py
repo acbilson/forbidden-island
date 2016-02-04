@@ -18,6 +18,7 @@ class TestGame(unittest.TestCase):
     bus = IslandBus()
     messageFactory = MessageFactory()
     game = IslandGame(bus, messageFactory)
+    pDeck = PlayerDeck()
     fio = FakeIO()
 
     fio.callStack = [StackItem(1, "What is your name? ", 'Alex\n' ),
@@ -25,7 +26,7 @@ class TestGame(unittest.TestCase):
                      StackItem(3, "Choose a player type: ", 'Diver\n' )]
 
     cs = ConsoleService(bus, fio)
-    ps = PlayerService(bus)
+    ps = PlayerService(bus, pDeck)
     ls = LogService(bus, fio)
 
     # Act

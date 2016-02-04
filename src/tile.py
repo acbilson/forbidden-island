@@ -1,5 +1,4 @@
 from enum import Enum
-from island import *
 
 class Tile(object):
 

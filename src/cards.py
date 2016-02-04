@@ -13,3 +13,14 @@ class CardDeck(object):
     """ Gets the top card from the deck """
     pass
 
+class PlayerDeck(CardDeck):
+
+  def __init__(self):
+    pass
+
+class IslandDeck(CardDeck):
+
+  def __init__(self):
+    pass
+
+

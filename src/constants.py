@@ -68,6 +68,12 @@ class CardType(Enum):
   Air = 6
   Fire = 7
 
+class LogType():
+
+  Info = "Info"
+  Warning = "Warning"
+  Error = "Error"
+
 class Board():
   Empty = (
   '             /   \ /   \\              \n' + 

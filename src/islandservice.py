@@ -54,3 +54,9 @@ class IslandNotifier(IslandSubscriber):
     """ Notifies the bus to add this message to its queue """
 
     self.bus.receive(message)
+
+  def log(self, logType, message):
+
+    """ Logs a message to the LogService """
+    lm = LogMessage((Request(logType, message)))
+    self.bus.receive(lm)

@@ -19,63 +19,65 @@ class TestIsland(unittest.TestCase):
     island = Island()
 
   def test_island_getBoard(self):
-    self.assertEqual(TestConstants.EmptyBoard, self.island.board)
 
-  def test_island_generateBoard(self):
+    """ When the island is retrieved, should already have been generated. """
+
+    actual = self.island.getBoard()
+      
+    self.assertTrue(len(actual) > 0)
+
+  def test_island_generateBoard_willNotDuplicate(self):
+
+    """ When a board is generated a second time, should not append to previous board """
+
+    originalLength = len(self.island.getBoard())
+
+    # already run once at instantiation
     self.island.generateBoard()
-    # print('\n' + self.island.board)
 
-  def test_island_getTile_beforeTilesAreGenerated(self):
-    self.island.board = TestConstants.GetTileBoard
+    afterLength = len(self.island.getBoard())
 
-    actual = self.island.getTile(Constant.TileNames["CliffsOfAbandon"])
-
-    expected = Tile(index=494,
-                    name=Constant.TileNames["CliffsOfAbandon"], 
-                    player=Constant.PlayerType["Engineer"], 
-                    status=Constant.TileStatus["Sunken"])
-
-    self.assertEqual(expected.name, actual.name)
+    self.assertEqual(originalLength, afterLength)
 
   def test_island_getTile_afterTilesAreGenerated(self):
 
-    self.island.generateBoard()
+    """ When the board has been generated (at init), I should be able to retrieve a tile. """
 
     actual = self.island.getTile(Constant.TileNames["CliffsOfAbandon"])
 
     self.assertEqual("COA", actual.name.value)
 
   def test_island_updateTile(self):
-    self.island.board = TestConstants.GetTileBoard
+
+    """ When I update a tile, should be reflected on the board. """
 
     updatedTile = Tile(index=494,
                        name=Constant.TileNames["DunesOfDeception"], 
                        player=Constant.PlayerType["Pilot"], 
-                       status=Constant.TileStatus["Raised"])
+                       status=Constant.TileStatus["Sunken"])
 
     self.island.updateTile(updatedTile)
+    board = self.island.getBoard()
 
-    expected = TestConstants.UpdateTileBoard
-    actual = self.island.board
-    self.assertEqual(expected, actual)
+    self.assertTrue(Constant.PlayerType["Pilot"] in board)
+    self.assertTrue(Constant.TileStatus["Sunken"] in board)
 
   def test_island_sinkTile(self):
-    self.island.board = TestConstants.GetTileBoard
 
-    tileToSink = Tile(index=494,
-                      name=Constant.TileNames["CliffsOfAbandon"], 
-                      player=Constant.PlayerType["Engineer"], 
-                      status=Constant.TileStatus["Sunken"])
+    """ When I sink a tile, it should no longer be on the board. """
+
+    tileToSink = self.island.getTile(Constant.TileNames["CliffsOfAbandon"])
 
     self.island.sinkTile(tileToSink)
+    board = self.island.getBoard()
 
-    expected = TestConstants.SunkenBoard
-    actual = self.island.board
-    self.assertEqual(expected, self.island.board)
+    self.assertFalse(Constant.TileNames["CliffsOfAbandon"] in board)
+
 
 class TestTile(unittest.TestCase):
 
   """ Testing the Tile class """
+
   tile = None
 
   def setUp(self):
@@ -88,12 +90,15 @@ class TestTile(unittest.TestCase):
 
     self.assertEqual(expected, actual)
 
-  def test_tile_getNameIndex(self):
+  def test_tile__getNameIndex(self):
     actual = self.tile.getNameIndex()
 
     self.assertEqual(10, actual)
 
   def test_tile_sink_updatesValue(self):
+
+    """ When a tile is sunk, should have empty name, player and status """
+
     self.tile.sink()
     
     self.assertEqual("     ", self.tile.name.value)
@@ -101,6 +106,9 @@ class TestTile(unittest.TestCase):
     self.assertEqual("     ", self.tile.status.value)
 
   def test_tile_sink_updatesIndex(self):
+
+    """ When a tile is sunk, should have a different index to reflect the missing side markers """
+
     ni = self.tile.name.index
     pi = self.tile.player.index
     si = self.tile.status.index
@@ -109,106 +117,3 @@ class TestTile(unittest.TestCase):
     self.assertEqual(ni - 1, self.tile.name.index)
     self.assertEqual(pi - 1, self.tile.player.index)
     self.assertEqual(si - 1, self.tile.status.index)
-
-
-class TestConstants():
-
-  EmptyBoard = (
-  '             /   \ /   \\              \n' + 
-  '             |   | |   |              \n' +
-  '             \   / \   /              \n' +
-  '                                      \n' + 
-  '       /   \ /   \ /   \ /   \\        \n' + 
-  '       |   | |   | |   | |   |        \n' + 
-  '       \   / \   / \   / \   /        \n' +
-  '                                      \n' + 
-  ' /   \ /   \ /   \ /   \ /   \ /   \\  \n' +
-  ' |   | |   | |   | |   | |   | |   |  \n' +
-  ' \   / \   / \   / \   / \   / \   /  \n' +
-  '                                      \n' + 
-  ' /   \ /   \ /   \ /   \ /   \ /   \\  \n' +
-  ' |   | |   | |   | |   | |   | |   |  \n' +
-  ' \   / \   / \   / \   / \   / \   /  \n' +
-  '                                      \n' + 
-  '       /   \ /   \ /   \ /   \\        \n' +
-  '       |   | |   | |   | |   |        \n' +
-  '       \   / \   / \   / \   /        \n' +
-  '                                      \n' + 
-  '             /   \ /   \\              \n' +
-  '             |   | |   |              \n' +
-  '             \   / \   /              \n')
-
-  GetTileBoard = (
-  '             /   \ /   \\              \n' + 
-  '             |   | |   |              \n' +
-  '             \   / \   /              \n' +
-  '                                      \n' + 
-  '       /   \ /   \ /   \ /   \\        \n' + 
-  '       |   | |   | |   | |   |        \n' + 
-  '       \   / \   / \   / \   /        \n' +
-  '                                      \n' + 
-  ' /   \ /   \ /   \ /   \ /   \ /   \\  \n' +
-  ' |   | |   | |   | |   | |   | |   |  \n' +
-  ' \   / \   / \   / \   / \   / \   /  \n' +
-  '                                      \n' + 
-  ' /   \ /   \ /   \ /   \ /COA\ /   \\  \n' +
-  ' |   | |   | |   | |   | |ENG| |   |  \n' +
-  ' \   / \   / \   / \   / \SNK/ \   /  \n' +
-  '                                      \n' + 
-  '       /   \ /   \ /   \ /   \\        \n' +
-  '       |   | |   | |   | |   |        \n' +
-  '       \   / \   / \   / \   /        \n' +
-  '                                      \n' + 
-  '             /   \ /   \\              \n' +
-  '             |   | |   |              \n' +
-  '             \   / \   /              \n')
-
-  UpdateTileBoard = (
-  '             /   \ /   \\              \n' + 
-  '             |   | |   |              \n' +
-  '             \   / \   /              \n' +
-  '                                      \n' + 
-  '       /   \ /   \ /   \ /   \\        \n' + 
-  '       |   | |   | |   | |   |        \n' + 
-  '       \   / \   / \   / \   /        \n' +
-  '                                      \n' + 
-  ' /   \ /   \ /   \ /   \ /   \ /   \\  \n' +
-  ' |   | |   | |   | |   | |   | |   |  \n' +
-  ' \   / \   / \   / \   / \   / \   /  \n' +
-  '                                      \n' + 
-  ' /   \ /   \ /   \ /   \ /DOD\ /   \\  \n' +
-  ' |   | |   | |   | |   | |PLT| |   |  \n' +
-  ' \   / \   / \   / \   / \   / \   /  \n' +
-  '                                      \n' + 
-  '       /   \ /   \ /   \ /   \\        \n' +
-  '       |   | |   | |   | |   |        \n' +
-  '       \   / \   / \   / \   /        \n' +
-  '                                      \n' + 
-  '             /   \ /   \\              \n' +
-  '             |   | |   |              \n' +
-  '             \   / \   /              \n')
-
-  SunkenBoard = (
-  '             /   \ /   \\              \n' + 
-  '             |   | |   |              \n' +
-  '             \   / \   /              \n' +
-  '                                      \n' + 
-  '       /   \ /   \ /   \ /   \\        \n' + 
-  '       |   | |   | |   | |   |        \n' + 
-  '       \   / \   / \   / \   /        \n' +
-  '                                      \n' + 
-  ' /   \ /   \ /   \ /   \ /   \ /   \\  \n' +
-  ' |   | |   | |   | |   | |   | |   |  \n' +
-  ' \   / \   / \   / \   / \   / \   /  \n' +
-  '                                      \n' + 
-  ' /   \ /   \ /   \ /   \       /   \\  \n' +
-  ' |   | |   | |   | |   |       |   |  \n' +
-  ' \   / \   / \   / \   /       \   /  \n' +
-  '                                      \n' + 
-  '       /   \ /   \ /   \ /   \\        \n' +
-  '       |   | |   | |   | |   |        \n' +
-  '       \   / \   / \   / \   /        \n' +
-  '                                      \n' + 
-  '             /   \ /   \\              \n' +
-  '             |   | |   |              \n' +
-  '             \   / \   /              \n')

@@ -9,12 +9,17 @@ class Island(object):
   EmptyTileSegment = '     '
 
   def __init__(self):
-    self.board = Board.Empty
     self.tiles = []
+    self.board = Board.Empty
+    self.generateBoard()
 
   def generateBoard(self):
     
-    """ randomly generates a filled board to begin play """
+    """ randomly generates a filled board to begin play.  Runs once """
+
+    # If the board is already generated, do not generate again
+    if self.board != Board.Empty:
+      return None
 
     tileNames = self._getRandomNames()
     self._generateTiles(tileNames)
@@ -47,6 +52,8 @@ class Island(object):
     # Turn all segments into one string to create the board
     self.board = ''.join([s for s in tileSegments])
 
+    hasRun = True
+
   def _getRandomNames(self):
     # Because it's converted from a dict to list, it's in random order
     return list(Constant.TileNames.values())
@@ -68,8 +75,8 @@ class Island(object):
                   794, 800]
 
     # Creates a tile for every index
-    for i,n in enumerate(allIndices):
-      tile = Tile(n, names[i], Constant.PlayerType["Empty"], Constant.TileStatus["Raised"])
+    for i,index in enumerate(allIndices):
+      tile = Tile(index, names[i], Constant.PlayerType["Empty"], Constant.TileStatus["Raised"])
       self.tiles.append(tile)
 
   def getBoard(self):
@@ -78,11 +85,22 @@ class Island(object):
 
     return self.board
 
+  def add_players_to_board(self, tileName, playerType):
+    tileToUpdate = self.getTile(tileName)
+    tileToUpdate.player.value = playerType
+    self.updateTile(tileToUpdate)
+
+  # TODO: implement method to add treasure to the board (may be called in generateBoard)
+  def add_treasure_to_board(self):
+    pass
+
   def getTile(self, tileName):
 
     """ Retrieves a tile from the board by name """
 
     tile = self._get_tile_by_list(tileName)
+
+    # Retrieve by index if board is not generated TODO: DEPRECIATE 
     if tile == None:
       tile = self._get_tile_by_index(tileName)
 
