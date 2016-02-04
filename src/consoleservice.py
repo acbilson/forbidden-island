@@ -11,13 +11,12 @@ class ConsoleService(IslandNotifier):
     self.subscribedMessages.extend([MessageType.Console, MessageType.Initialize])
     self.io = io
 
-  # - Initialize {{{1 -
   def initialize(self, message):
     self.write_welcome()
     self.read_username()
     count = self.read_playercount()
-    message = self.read_playertype(count)
-    self.bus.receive(message)
+    addPlayersMessage = self.read_playertype(count)
+    self.bus.receive(addPlayersMessage)
 
   def write_welcome(self):
     self.io.write("Welcome to Forbidden Island!\n\n")
@@ -64,15 +63,18 @@ class ConsoleService(IslandNotifier):
   def _is_valid_playertype(self, playerType):
       return playerType in ["Engineer\n", "Pilot\n", "Diver\n", "Messenger\n", "Explorer\n", "Navigator\n"]
 
-  # - Initialize }}}  -
-
   def exit(self, message):
     sys.exit()
+
+  # TODO: Implement this
+  def next(self, message):
+    pass
 
   def on_message_received(self, message):
     options = {
       MessageType.Initialize: self.initialize,
-      MessageType.Exit: self.exit
+      MessageType.Exit: self.exit,
+      MessageType.Console: self.next
     }
 
     execute = options.get(message.type, self.nothing)

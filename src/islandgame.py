@@ -21,7 +21,12 @@ class IslandGame(object):
     exitCode = 0
     while(exitCode == 0):
       exitCode = self.bus.listen()
+      self.start_next()
       self.bus.receive(ExitMessage())
+
+  def start_next(self):
+    message = ConsoleMessage(Request("Next Action"))
+    self.bus.receive(message)
   
 if __name__ == "__main__":
 

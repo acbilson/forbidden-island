@@ -44,6 +44,11 @@ class TestConsoleService(unittest.TestCase):
     expected = [Constant.PlayerType["Diver"], Constant.PlayerType["Engineer"]]
     self.assertEqual(expected, actual.request.content)
 
+  # TODO: Figure out what this is going to do
+  def test_start_next_receivesUserInput_returns(self):
+
+    self.cs.next(None)
+
 # Message for these tests
 class TestMessage(IslandMessage):
 

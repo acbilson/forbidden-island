@@ -1,3 +1,4 @@
+import random
 from constants import *
 from player import *
 from tile import *
@@ -54,9 +55,45 @@ class Island(object):
 
     hasRun = True
 
+  def sink_first_tiles(self):
+    tiles = self._get_random_tiles()
+    for t in tiles:
+      t.status.value = Constant.TileStatus["Sunken"]
+      self.updateTile(t)
+
+  def _get_random_tiles(self):
+
+    """ Gets six random tiles, the ones that will be sunken at the beginning """
+
+    names = self._getRandomNames()
+    indices = self._getRandomIndices(6)
+
+    sixNames = []
+    
+    for i,n in enumerate(names):
+      if (i in indices):
+        sixNames.append(n)
+
+    sixTiles = [t for t in self.tiles if t.name.value in sixNames]
+
+    return sixTiles
+    
   def _getRandomNames(self):
     # Because it's converted from a dict to list, it's in random order
     return list(Constant.TileNames.values())
+
+  def _getRandomIndices(self, number):
+
+    endOfRange = len(self.tiles)
+    indices = []
+
+    while len(indices) < number:
+      randomNumber = random.randrange(endOfRange)
+      # Makes sure all random numbers are unique
+      if not randomNumber in indices:
+        indices.append(randomNumber)
+      
+    return indices
 
   def _generateTiles(self, names):
 
@@ -137,16 +174,14 @@ class Island(object):
 
   def updateTile(self, newTile):
 
-    """ Gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Highly
-    resource intensive, but no other way so far """
+    """ Updates a tile with the new tile's contents """
 
     segments = self._getIndexSegments(newTile, newTile.NameWidth)
     self._updateBoardWithTile(segments, newTile)
 
   def sinkTile(self, tileToSink):
 
-    """ Gets substrings for all non-tile pieces, then adds them back in the appropriate place.  Seems
-    resource intensive, but no other way so far """
+    """ Sinks the given tile """
 
     tileToSink.sink()
 

@@ -73,6 +73,21 @@ class TestIsland(unittest.TestCase):
 
     self.assertFalse(Constant.TileNames["CliffsOfAbandon"] in board)
 
+  def test__get_random_tiles(self):
+
+    """ Should return six random tiles """
+
+    first = self.island._get_random_tiles()
+    second = self.island._get_random_tiles()
+
+    self.assertEqual(6, len(first)) 
+    self.assertTrue(first != second)
+
+  def test_sink_first_tiles_success(self):
+
+    self.island.sink_first_tiles()
+    
+    self.assertTrue(Constant.TileStatus["Sunken"] in self.island.getBoard())
 
 class TestTile(unittest.TestCase):
 

@@ -13,7 +13,7 @@ class ScreenService(IslandNotifier):
 
   def add_players(self, message):
 
-    """ Adds players to the island board.  May move to island.py """
+    """ Adds players to the island board. """
 
     playerTuple = message.request.content
 
@@ -22,6 +22,16 @@ class ScreenService(IslandNotifier):
         self.island.add_players_to_board(tile, player)
     
     self.log(LogType.Info, str(len(playerTuple)) + " players added to the board")
+
+  def sink_initial_tiles(self):
+    
+    """ Sinks the first six tiles of the board """
+    tiles = self.island.get_random_tiles()
+    for tile in tiles:
+      tile.sink()
+      self.island
+
+    pass
 
   def render(self, message):
 
@@ -42,6 +52,8 @@ class ScreenService(IslandNotifier):
 
     execute = options.get(message.request.header, self.nothing)
     execute(message)
+
+    # Render after every message has been received
     self.render(None)
 
 class ScreenOptions():
