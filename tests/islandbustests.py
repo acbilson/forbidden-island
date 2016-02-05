@@ -1,7 +1,7 @@
 import unittest
 import sys
 sys.path.append('..\src')
-from islandservice import *
+from service_island import *
 from islandbus import *
 from constants import *
 from message import *

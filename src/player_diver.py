@@ -5,7 +5,8 @@ class DiverPlayer(Player):
   
   """ This class represents a diver player on the board """
 
-  def __init__(self):
-    Player.__init__(self, Constant.PlayerType["Diver"])
+  def __init__(self, commands):
+    Player.__init__(self, commands)
+    self.type = Constant.PlayerType["Diver"]
     self.currentLocation = Constant.TileNames["IronGate"]
 

@@ -1,6 +1,6 @@
 import os
 from constants import *
-from islandservice import *
+from service_island import *
 from tile import *
 
 class ScreenService(IslandNotifier):

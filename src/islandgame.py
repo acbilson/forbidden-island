@@ -1,11 +1,13 @@
 import sys
 sys.path.append('C:\SourceCode\PersonalRepo\Python\PyLexLib')
 from iofactory import *
+from service_island import *
+from service_console import *
+from service_player import *
+from service_log import *
+from service_screen import *
+from playerfactory import *
 from islandbus import *
-from screenservice import *
-from consoleservice import *
-from playerservice import *
-from logservice import *
 from island import *
 
 class IslandGame(object):
@@ -32,17 +34,18 @@ if __name__ == "__main__":
 
   cio = IOFactory().GetInstance()
   bus = IslandBus()
-  factory = MessageFactory()
+  messageFactory = MessageFactory()
+  playerFactory = PlayerFactory()
   island = Island()
   playerDeck = PlayerDeck()
 
   # Each service registers with the bus within their ctor
   ss = ScreenService(bus, island, cio)
   cs = ConsoleService(bus, cio)
-  ps = PlayerService(bus, playerDeck)
+  ps = PlayerService(bus, playerFactory)
   ls = LogService(bus, cio)
 
-  game = IslandGame(bus, factory)
+  game = IslandGame(bus, messageFactory)
 
   game.play()
 

@@ -1,15 +1,15 @@
 from player import *
-from islandservice import *
+from service_island import *
 from cards import *
-from screenservice import ScreenOptions
+from service_screen import ScreenOptions
 
 class PlayerService(IslandNotifier):
 
-  def __init__(self, bus, deck):
+  def __init__(self, bus, playerFactory):
     IslandNotifier.__init__(self, bus)
     self.subscribedMessages.append(MessageType.Player)
     self.players = []
-    self.deck = deck
+    self.playerFactory = playerFactory
 
   def create_players(self, message):
 
@@ -27,7 +27,8 @@ class PlayerService(IslandNotifier):
     players = []
 
     for playerType in playerTypes:
-      players.append(Player(playerType))
+      player = self.playerFactory.get_instance(playerType)
+      players.append(player)
 
     self.players.extend(players)
     return players
@@ -37,8 +38,7 @@ class PlayerService(IslandNotifier):
     playersToCreate = []
 
     for player in players:
-      playerLocation = player.get_start_location()
-      playersToCreate.append((player.type, playerLocation))
+      playersToCreate.append((player.type, player.currentLocation))
 
     message = ScreenMessage(Request(ScreenOptions.AddPlayers, playersToCreate))
     return message

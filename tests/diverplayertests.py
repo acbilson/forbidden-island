@@ -1,13 +1,14 @@
 import unittest
 import sys
 sys.path.append('..\src')
-from diverplayer import *
+from player_diver import *
 from constants import *
 
 class TestDiverPlayer(unittest.TestCase):
   
     def test_ctor(self):
-      diver = DiverPlayer()
+      commands = {'move': MoveCommand(PlayerMover)}
+      diver = DiverPlayer(commands)
 
       self.assertTrue(len(diver.commands) > 0)
       self.assertEqual(Constant.TileNames["IronGate"], diver.currentLocation)

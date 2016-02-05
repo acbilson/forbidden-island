@@ -2,15 +2,16 @@ import unittest
 import sys
 sys.path.append('..\src')
 from island import *
+from service_island import *
+from service_player import *
 from islandbus import *
-from islandservice import *
-from playerservice import *
 from constants import *
 from message import *
 from cards import *
 import sys
 sys.path.append('C:\SourceCode\PersonalRepo\Python\PyLexLib')
 from iofactory import *
+from playerfactory import *
 
 class TestPlayerService(unittest.TestCase):
 
@@ -18,13 +19,13 @@ class TestPlayerService(unittest.TestCase):
 
   def setUp(self):
     bus = IslandBus()
-    deck = PlayerDeck()
-    self.ps = PlayerService(bus, deck)
+    playerFactory = PlayerFactory()
+    self.ps = PlayerService(bus, playerFactory)
 
   def test_ctor(self):
     bus = IslandBus()
-    deck = PlayerDeck()
-    ps = PlayerService(bus, deck)
+    playerFactory = PlayerFactory()
+    ps = PlayerService(bus, playerFactory)
 
   def test_on_message_received_receivesCreateMessage_CreatesTwoPlayers(self):
 
@@ -38,7 +39,8 @@ class TestPlayerService(unittest.TestCase):
   
   def test__get_screen_message_receivesTwoPlayers_returnsCreateMessage(self):
 
-    players = [Player(Constant.PlayerType["Diver"]), Player(Constant.PlayerType["Pilot"])]
+    commands = {'move': MoveCommand(PlayerMover)}
+    players = [DiverPlayer(commands), PilotPlayer(commands)]
 
     actual = self.ps._get_screen_message(players)
 

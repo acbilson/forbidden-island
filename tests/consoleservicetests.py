@@ -3,8 +3,8 @@ import sys
 sys.path.append('..\src')
 from island import *
 from islandbus import *
-from islandservice import *
-from consoleservice import *
+from service_island import *
+from service_console import *
 from constants import *
 from message import *
 from cards import *

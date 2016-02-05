@@ -2,10 +2,10 @@ import unittest
 import sys
 sys.path.append('..\src')
 from islandgame import *
-from consoleservice import *
-from playerservice import *
-from logservice import *
-from screenservice import *
+from service_console import *
+from service_player import *
+from service_log import *
+from service_screen import *
 from iofactory import FakeIO
 
 class TestGame(unittest.TestCase):
@@ -17,6 +17,7 @@ class TestGame(unittest.TestCase):
     # Arrange
     bus = IslandBus()
     messageFactory = MessageFactory()
+    playerFactory = PlayerFactory()
     game = IslandGame(bus, messageFactory)
     island = Island()
     pDeck = PlayerDeck()
@@ -29,7 +30,7 @@ class TestGame(unittest.TestCase):
 
     cs = ConsoleService(bus, fio)
     ss = ScreenService(bus, island, fio)
-    ps = PlayerService(bus, pDeck)
+    ps = PlayerService(bus, playerFactory)
     ls = LogService(bus, fio)
 
     # Act

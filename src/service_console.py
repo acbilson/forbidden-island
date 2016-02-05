@@ -1,7 +1,7 @@
 import sys
-from islandservice import *
-from screenservice import ScreenOptions
-from playerservice import PlayerOptions
+from service_island import *
+from service_screen import ScreenOptions
+from service_player import PlayerOptions
 
 class ConsoleService(IslandNotifier):
   

@@ -3,6 +3,7 @@ import sys
 sys.path.append('..\src')
 from constants import *
 from serialization import *
+from player_pilot import *
 
 class TestMessageSerialization(unittest.TestCase):
 
@@ -33,7 +34,8 @@ class TestPlayerSerialization(unittest.TestCase):
 
   def test_playerEncoder_encodesMessageToJSON(self):
 
-    player = Player(Constant.PlayerType["Pilot"])
+    commands = {'move': MoveCommand(PlayerMover)}
+    player = PilotPlayer(commands)
     actual = json.dumps(player, cls=PlayerEncoder, sort_keys=True)
     
     expected = '{"__Player__": true, "type": "PLT"}'

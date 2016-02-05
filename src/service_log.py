@@ -1,4 +1,4 @@
-from islandservice import *
+from service_island import *
 
 class LogService(IslandSubscriber):
   

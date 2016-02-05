@@ -4,7 +4,7 @@ sys.path.append('..\src')
 from island import *
 from tile import *
 from islandbus import *
-from islandservice import *
+from service_island import *
 from constants import *
 from islandgame import *
 from player import *

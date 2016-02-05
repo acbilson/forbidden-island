@@ -1,7 +1,7 @@
 from queue import Queue
 from constants import * 
 from message import *
-from islandservice import *
+from service_island import *
 
 class IslandBus(object):
 
