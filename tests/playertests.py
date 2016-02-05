@@ -7,16 +7,24 @@ from cards import *
 
 class TestPlayer(unittest.TestCase):
   
-    def test_ctor(self):
-      p = Player(Constant.PlayerType["Diver"])
+  def test_ctor(self):
 
-    def test_get_start_location_pilot_foolslanding(self):
+    p = Player(Constant.PlayerType["Diver"])
 
-      """ When I retrieve the start location for a pilot, should return Fool's Landing """
+    self.assertTrue(len(p.commands) > 0)
 
-      p = Player(Constant.PlayerType["Pilot"])
-      
-      actual = p.get_start_location()
+  def test_get_start_location_pilot_foolslanding(self):
 
-      self.assertEqual(Constant.TileNames["FoolsLanding"], actual)
+    """ When I retrieve the start location for a pilot, should return Fool's Landing """
 
+    p = Player(Constant.PlayerType["Pilot"])
+    
+    actual = p.get_start_location()
+
+    self.assertEqual(Constant.TileNames["FoolsLanding"], actual)
+
+  def test_move_whenATileIsSent_MovesPlayerLocationToThatTile(self):
+
+    p = Player(Constant.PlayerType["Pilot"])
+
+    p.move()

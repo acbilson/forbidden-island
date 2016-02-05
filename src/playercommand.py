@@ -1,58 +1,71 @@
-from constant import *
+from constants import *
+from island import *
+from enum import Enum
 
-class PlayerInvoker(object):
+# class PlayerInvoker(object):
   
-  """ The invoker object for actions a Player may take """
+  # """ The invoker object for actions a Player may take """
 
-  def __init__(self, receiver, commands):
-    self.receiver = receiver
-    self.commands = commands
+  # def __init__(self, commands):
+    # self.commands = commands
+    # self.commandStack = []
 
-  def set_command(self, command):
-    pass
+  # def set_command(self, command):
+    # pass
 
-  def undo_command(self):
-    pass
+  # def undo_command(self):
+    # pass
 
-  def execute_command(self):
-    pass
+  # # What should go here?  This is the info that
+  # # will be used to undo operations
+  # def move(self):
+    # self.commands['move'].execute()
+    # pass
 
 
 class PlayerReceiver(object):
 
-  """ The receiver object for actions a Player may take """
+  """ The base receiver object for actions a Player may take """
 
-  def __init__(self):
+  def action(self):
+    raise Exception("Not Implemented")
+
+class PlayerMover(PlayerReceiver):
+
+  def __init__(self, ):
     pass
 
   def action(self):
+
+    """ Moves the player one tile """
+
+    print("Player has been moved")
+
     pass
 
 class PlayerCommand(object):
 
   """ The base command object for actions a Player may take """
 
-  def __init__(self, receiver):
-    self.receiver = receiver
-
   def execute(self):
-    self.receiver.action()
-    pass
+    raise Exception("Not implemented")
 
   def unexecute(self):
-    pass
+    raise Exception("Not implemented")
 
 
 class MoveCommand(PlayerCommand):
 
   """ The command object to move a Player to another Tile """
 
-  def __init__(self):
-    pass
+  def __init__(self, mover):
+    self.mover = mover
 
   def execute(self):
 
     """ Moves a user one tile """
+
+    self.mover.action()
 
     pass
 

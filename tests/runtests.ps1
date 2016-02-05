@@ -6,6 +6,8 @@ py -m unittest islandtests  `
                screenservicetests `
                messagetests `
                playertests `
+               diverplayertests `
+               playerfactorytests `
                serializationtests `
                integrationtests
 
