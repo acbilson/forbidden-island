@@ -76,3 +76,12 @@ Flow:
           If no ->  sends error message - can't move there
                |
           Updates player action counter to one less
+
+PlayerCommandFlow:
+
+  current player calls move('up' command, newTile)
+    - checks this against currentTile to see if moving up is valid; sets currentTile = returnedTile
+      - calls command['move'].execute('up' command, newTile, self.tiles); returns returnedTile
+        - calls receiver.action('up' command, newTile, tiles); returns returnedTile
+
+

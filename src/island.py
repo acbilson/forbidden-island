@@ -167,11 +167,6 @@ class Island(object):
 
     return Tile(index=ni, name=top, player=mid, status=bot)
 
-  # TODO: implement.  Should be some way of stripping the cursor's location left/right, placing the cursor in the new
-  # spot, then snapping the two ends back on.  Similar to updateTile, only fewer segments
-  def updateCursor(self, cursor):
-    pass
-
   def updateTile(self, newTile):
 
     """ Updates a tile with the new tile's contents """

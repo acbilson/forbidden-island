@@ -1,3 +1,5 @@
-Sink six tiles to begin the game
+Add the treasure icons to the board
 Start the first player's actions
   - implement a Command Pattern to allow for undo 
+  - figure out what each action will need to complete
+  - determine how to continue to keep player and screen decoupled
