@@ -9,14 +9,12 @@ class TestPlayer(unittest.TestCase):
   
   def test_ctor(self):
 
-    commands = {'move': MoveCommand(PlayerMover())}
-    p = Player(commands)
+    p = Player(None)
 
-    self.assertTrue(len(p.commands) > 0)
+    self.assertEqual(0, len(p.commandHistory))
 
   def test_move_whenATileIsSent_MovesPlayerLocationToThatTile(self):
 
-    commands = {'move': MoveCommand(PlayerMover())}
-    p = Player(commands)
+    p = Player(None)
 
     p.move()

@@ -10,5 +10,4 @@ class TestDiverPlayer(unittest.TestCase):
       commands = {'move': MoveCommand(PlayerMover)}
       diver = DiverPlayer(commands)
 
-      self.assertTrue(len(diver.commands) > 0)
       self.assertEqual(Constant.TileNames["IronGate"], diver.currentLocation)

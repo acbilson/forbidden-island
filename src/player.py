@@ -8,10 +8,12 @@ class Player(object):
   def __init__(self, commands):
     self.type = None
     self.currentLocation = None
-    self.commands = commands
+    self.commandHistory = []
 
   def move(self):
-    self.commands['move'].execute()
+    move = MoveCommand(PlayerMover())
+    move.execute()
+    self.commandHistory.append(move)
 
   def shore_up(self):
     pass
@@ -29,5 +31,6 @@ class Player(object):
     pass
 
   def undo(self):
-    pass
+    lastCommand = self.commandHistory.pop()
+    lastCommand.unexecute()
 
