@@ -1,6 +1,6 @@
 import unittest
 import sys
-sys.path.append('..\src')
+sys.path.append('../src')
 from island import *
 from service_island import *
 from service_player import *
@@ -9,7 +9,6 @@ from constants import *
 from message import *
 from cards import *
 import sys
-sys.path.append('C:\SourceCode\PersonalRepo\Python\PyLexLib')
 from iofactory import *
 from playerfactory import *
 

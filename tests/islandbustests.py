@@ -1,6 +1,6 @@
 import unittest
 import sys
-sys.path.append('..\src')
+sys.path.append('../src')
 from service_island import *
 from islandbus import *
 from constants import *

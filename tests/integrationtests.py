@@ -1,6 +1,6 @@
 import unittest
 import sys
-sys.path.append('..\src')
+sys.path.append('../src')
 from islandgame import *
 from service_console import *
 from service_player import *

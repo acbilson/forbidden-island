@@ -18,4 +18,3 @@ class LogService(IslandSubscriber):
     for i,l in enumerate(self.log):
       report = str(i) + ": " + l
       self.io.write(report)
-

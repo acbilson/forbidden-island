@@ -1,6 +1,6 @@
 import unittest
 import sys
-sys.path.append('..\src')
+sys.path.append('../src')
 from player_diver import *
 from constants import *
 
