@@ -2,6 +2,7 @@ from enum import Enum
 
 class Tile(object):
 
+  MASTER_ID = 0
   Empty = '   '
   Sunken = '     '
   BoardWidth = 39
@@ -12,6 +13,9 @@ class Tile(object):
     self.name = TileSegment(index, name)
     self.player = TileSegment(index + self.BoardWidth, player)
     self.status = TileSegment(index + (self.BoardWidth * 2), status)
+
+    # Set a unique identifier
+    self.id = self.MASTER_ID + 1
 
   def __eq__(self, other):
     if isinstance(other, self.__class__):
