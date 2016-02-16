@@ -1,5 +1,3 @@
-import sys
-sys.path.append('C:\SourceCode\PersonalRepo\Python\PyLexLib')
 from iofactory import *
 from service_island import *
 from service_console import *
