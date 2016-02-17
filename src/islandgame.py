@@ -7,6 +7,7 @@ from service_screen import *
 from playerfactory import *
 from islandbus import *
 from island import *
+from tiles import *
 
 class IslandGame(object):
   """ Central class for the Forbidden Island game, where the game loop executes """
@@ -36,11 +37,12 @@ if __name__ == "__main__":
   playerFactory = PlayerFactory()
   island = Island()
   playerDeck = PlayerDeck()
+  tiles = Tiles()
 
   # Each service registers with the bus within their ctor
-  ss = ScreenService(bus, island, cio)
+  ss = ScreenService(bus, island, cio, tiles)
   cs = ConsoleService(bus, cio)
-  ps = PlayerService(bus, playerFactory)
+  ps = PlayerService(bus, playerFactory, tiles)
   ls = LogService(bus, cio)
 
   game = IslandGame(bus, messageFactory)

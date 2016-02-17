@@ -11,6 +11,7 @@ from cards import *
 import sys
 from iofactory import *
 from playerfactory import *
+from tiles import *
 
 class TestPlayerService(unittest.TestCase):
 
@@ -19,12 +20,14 @@ class TestPlayerService(unittest.TestCase):
   def setUp(self):
     bus = IslandBus()
     playerFactory = PlayerFactory()
-    self.ps = PlayerService(bus, playerFactory)
+    tiles = Tiles()
+    self.ps = PlayerService(bus, playerFactory, tiles)
 
   def test_ctor(self):
     bus = IslandBus()
     playerFactory = PlayerFactory()
-    ps = PlayerService(bus, playerFactory)
+    tiles = Tiles()
+    ps = PlayerService(bus, playerFactory, tiles)
 
   def test_on_message_received_receivesCreateMessage_CreatesTwoPlayers(self):
 
@@ -35,7 +38,18 @@ class TestPlayerService(unittest.TestCase):
     self.ps.on_message_received(msg)
 
     self.assertEqual(2, len(self.ps.players))
-  
+ 
+  def test_on_message_received_receivesCreateMessage_updatesTiles(self):
+
+    """ When a request for two players to be created is received, should add them to the tiles """
+
+    msg = PlayerMessage(Request(PlayerOptions.Create, [Constant.PlayerType["Diver"]]))
+
+    self.ps.on_message_received(msg)
+    diverTile = self.ps.tiles.get_tile(Constant.TileNames["IronGate"])
+
+    self.assertEqual(Constant.PlayerType["Diver"], diverTile.player.value)
+   
   def test__get_screen_message_receivesTwoPlayers_returnsCreateMessage(self):
 
     commands = {'move': MoveCommand(PlayerMover)}

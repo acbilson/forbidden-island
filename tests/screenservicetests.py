@@ -9,8 +9,8 @@ from constants import *
 from message import *
 from cards import *
 import sys
-sys.path.append('C:\SourceCode\PersonalRepo\Python\PyLexLib')
 from iofactory import *
+from tiles import *
 
 class TestScreenService(unittest.TestCase):
 
@@ -21,13 +21,15 @@ class TestScreenService(unittest.TestCase):
     bus = IslandBus()
     island = Island()
     self.fio = FakeIO()
-    self.ss = ScreenService(bus, island, self.fio)
+    tiles = Tiles()
+    self.ss = ScreenService(bus, island, self.fio, tiles)
 
   def test_ctor(self):
     bus = IslandBus()
     island = Island()
     fio = FakeIO()
-    ss = ScreenService(bus, island, fio)
+    tiles = Tiles()
+    ss = ScreenService(bus, island, fio, tiles)
 
   def test_on_message_received_emptyMessage_nothingHappens(self):
 

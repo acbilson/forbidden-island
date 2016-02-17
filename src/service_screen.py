@@ -5,11 +5,12 @@ from tile import *
 
 class ScreenService(IslandNotifier):
   
-  def __init__(self, bus, island, cio):
+  def __init__(self, bus, island, cio, tiles):
     IslandNotifier.__init__(self, bus)
     self.subscribedMessages.append(MessageType.Screen)
     self.island = island
     self.io = cio
+    self.tiles = tiles
 
   def add_players(self, message):
 
