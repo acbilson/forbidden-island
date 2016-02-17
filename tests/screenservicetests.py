@@ -51,20 +51,6 @@ class TestScreenService(unittest.TestCase):
     # Something was rendered
     self.assertTrue(len(self.fio.writeContent) > 0)
 
-  def test_on_message_received_addPlayers_areAdded(self):
-
-    """ When a request to add two players to the board is received, the island is updated with the requested players """
-    self.ss.island.generateBoard()
-
-    playerTuple = (Constant.PlayerType["Explorer"], Constant.TileNames["CopperGate"]), (Constant.PlayerType["Messenger"],
-    Constant.TileNames["SilverGate"])
-    msg = ScreenMessage(Request(ScreenOptions.AddPlayers, playerTuple))
-
-    self.ss.on_message_received(msg)
-
-    self.assertTrue(Constant.PlayerType["Explorer"] in self.ss.island.getBoard())
-    self.assertTrue(Constant.PlayerType["Messenger"] in self.ss.island.getBoard())
-
 # Message for these tests
 class TestMessage(IslandMessage):
 

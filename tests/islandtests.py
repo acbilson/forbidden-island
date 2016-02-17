@@ -5,6 +5,7 @@ from island import *
 from tile import *
 from player import *
 from constants import *
+from tiles import *
 
 class TestIsland(unittest.TestCase):
 
@@ -18,76 +19,20 @@ class TestIsland(unittest.TestCase):
   def test_island_ctor(self):
     island = Island()
 
-  def test_island_getBoard(self):
+  def test_island_generate_board_returnsBoard(self):
 
-    """ When the island is retrieved, should already have been generated. """
+    """ When the island is generated, should return a board. """
+  
+    # Generate tiles
+    t = Tiles()
+    testTiles = []
+    for i in range(0,23):
+      testTiles.append(Tile(i, "TST", "   ", "   "))
+    t.tiles = testTiles
 
-    actual = self.island.getBoard()
+    actual = self.island.generate_board(t)
       
     self.assertTrue(len(actual) > 0)
-
-  def test_island_generateBoard_willNotDuplicate(self):
-
-    """ When a board is generated a second time, should not append to previous board """
-
-    originalLength = len(self.island.getBoard())
-
-    # already run once at instantiation
-    self.island.generateBoard()
-
-    afterLength = len(self.island.getBoard())
-
-    self.assertEqual(originalLength, afterLength)
-
-  def test_island_getTile_afterTilesAreGenerated(self):
-
-    """ When the board has been generated (at init), I should be able to retrieve a tile. """
-
-    actual = self.island.getTile(Constant.TileNames["CliffsOfAbandon"])
-
-    self.assertEqual("COA", actual.name.value)
-
-  def test_island_updateTile(self):
-
-    """ When I update a tile, should be reflected on the board. """
-
-    updatedTile = Tile(index=494,
-                       name=Constant.TileNames["DunesOfDeception"], 
-                       player=Constant.PlayerType["Pilot"], 
-                       status=Constant.TileStatus["Sunken"])
-
-    self.island.updateTile(updatedTile)
-    board = self.island.getBoard()
-
-    self.assertTrue(Constant.PlayerType["Pilot"] in board)
-    self.assertTrue(Constant.TileStatus["Sunken"] in board)
-
-  def test_island_sinkTile(self):
-
-    """ When I sink a tile, it should no longer be on the board. """
-
-    tileToSink = self.island.getTile(Constant.TileNames["CliffsOfAbandon"])
-
-    self.island.sinkTile(tileToSink)
-    board = self.island.getBoard()
-
-    self.assertFalse(Constant.TileNames["CliffsOfAbandon"] in board)
-
-  def test__get_random_tiles(self):
-
-    """ Should return six random tiles """
-
-    first = self.island._get_random_tiles()
-    second = self.island._get_random_tiles()
-
-    self.assertEqual(6, len(first)) 
-    self.assertTrue(first != second)
-
-  def test_sink_first_tiles_success(self):
-
-    self.island.sink_first_tiles()
-    
-    self.assertTrue(Constant.TileStatus["Sunken"] in self.island.getBoard())
 
 class TestTile(unittest.TestCase):
 

@@ -38,8 +38,9 @@ class TestGame(unittest.TestCase):
     # Act
     game.play()
 
-    board = island.getBoard()
-    self.assertTrue (len(board) > 0)
-    self.assertTrue(Constant.PlayerType["Diver"] in board)
-    self.assertTrue(Constant.PlayerType["Engineer"] in board)
-    
+    print('Board is:')
+    print(island.board)
+
+    self.assertTrue (len(island.board) > 0)
+    self.assertTrue(Constant.PlayerType["Diver"] in island.board)
+    self.assertTrue(Constant.PlayerType["Engineer"] in island.board)

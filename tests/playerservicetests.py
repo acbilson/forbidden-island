@@ -49,16 +49,3 @@ class TestPlayerService(unittest.TestCase):
     diverTile = self.ps.tiles.get_tile(Constant.TileNames["IronGate"])
 
     self.assertEqual(Constant.PlayerType["Diver"], diverTile.player.value)
-   
-  def test__get_screen_message_receivesTwoPlayers_returnsCreateMessage(self):
-
-    commands = {'move': MoveCommand(PlayerMover)}
-    players = [DiverPlayer(commands), PilotPlayer(commands)]
-
-    actual = self.ps._get_screen_message(players)
-
-    diverExpected = (Constant.PlayerType["Diver"], Constant.TileNames['IronGate'])
-    pilotExpected = (Constant.PlayerType["Pilot"], Constant.TileNames['FoolsLanding'])
-
-    self.assertEqual(diverExpected, actual.request.content[0])
-    self.assertEqual(pilotExpected, actual.request.content[1])

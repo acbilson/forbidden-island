@@ -14,15 +14,15 @@ class PlayerService(IslandNotifier):
 
   def create_players(self, message):
 
-    """ Creates all players and sends their info to the ScreenService for a board update """
+    """ Creates all players and adds them to the tiles """
 
     playerTypes = message.request.content
 
     if playerTypes != None:
       players = self._add_players_to_list(playerTypes)
       self._add_players_to_tiles(players)
-      message = self._get_screen_message(players)
-      self.bus.receive(message)
+      renderMsg = ScreenMessage(Request(ScreenOptions.Render))
+      self.bus.receive(renderMsg)
 
   def _add_players_to_tiles(self, players):
     
@@ -41,16 +41,6 @@ class PlayerService(IslandNotifier):
 
     self.players.extend(players)
     return players
-
-  def _get_screen_message(self, players):
-
-    playersToCreate = []
-
-    for player in players:
-      playersToCreate.append((player.type, player.currentLocation))
-
-    message = ScreenMessage(Request(ScreenOptions.AddPlayers, playersToCreate))
-    return message
    
   def on_message_received(self, message):
     options = {
