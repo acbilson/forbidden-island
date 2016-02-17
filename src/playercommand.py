@@ -39,8 +39,6 @@ class PlayerMover(PlayerReceiver):
 
     """ Moves the player one tile """
 
-    print("Player has been moved")
-
     pass
 
 class PlayerCommand(object):

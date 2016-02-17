@@ -28,6 +28,7 @@ class PlayerService(IslandNotifier):
     
     for p in players:
       tileToUpdate = self.tiles.get_tile(p.currentLocation)
+      tileToUpdate.player.value = p.type
       self.tiles.update_tile(tileToUpdate)
 
   def _add_players_to_list(self, playerTypes):
