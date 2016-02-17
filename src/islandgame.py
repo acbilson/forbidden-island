@@ -23,6 +23,7 @@ class IslandGame(object):
     while(exitCode == 0):
       exitCode = self.bus.listen()
       self.start_next()
+      self.bus.listen()
       self.bus.receive(ExitMessage())
 
   def start_next(self):

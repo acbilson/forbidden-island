@@ -36,6 +36,8 @@ class TestGame(unittest.TestCase):
     ls = LogService(bus, fio)
 
     # Act
+    import pdb
+    pdb.set_trace()
     game.play()
 
     print('Board is:')

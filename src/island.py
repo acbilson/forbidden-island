@@ -17,6 +17,8 @@ class Island(object):
     
     """ generates the board from the tiles given """
 
+    import pdb
+    pdb.set_trace()
     # Get list of tiles instead of Tiles obj
     tiles = tiles.tiles
 
@@ -34,6 +36,7 @@ class Island(object):
       tileSegments.append(tiles[i].name.value)
       segStart = tiles[i].name.index + self.NameWidth
       segEnd = tiles[i+1].name.index
+      # TODO: Must add the other values, not just the name
       tileSegment = self.board[segStart:segEnd]
       tileSegments.append(tileSegment)
 
