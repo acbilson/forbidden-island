@@ -17,7 +17,7 @@ class ScreenService(IslandNotifier):
     """ Renders the island board to the screen """
     
     self.io.clear()
-    board = self.island.generate_board(self.tiles)
+    board = self.island.generate_board(self.tiles.tiles)
     self.io.write('\n')
     self.io.write(board)
 

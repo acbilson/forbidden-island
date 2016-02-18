@@ -36,13 +36,9 @@ class TestGame(unittest.TestCase):
     ls = LogService(bus, fio)
 
     # Act
-    import pdb
-    pdb.set_trace()
     game.play()
 
-    print('Board is:')
-    print(island.board)
-
-    self.assertTrue (len(island.board) > 0)
-    self.assertTrue(Constant.PlayerType["Diver"] in island.board)
-    self.assertTrue(Constant.PlayerType["Engineer"] in island.board)
+    board = island.generate_board(tiles.tiles)
+    self.assertTrue (len(board) > 0)
+    self.assertTrue(Constant.PlayerType["Diver"] in board)
+    self.assertTrue(Constant.PlayerType["Engineer"] in board)

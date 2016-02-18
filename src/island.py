@@ -9,45 +9,66 @@ class Island(object):
   BoardWidth = 39
   EmptyTileSegment = '     '
 
-  def __init__(self):
-    self.tiles = []
-    self.board = Board.Empty
-
   def generate_board(self, tiles):
     
     """ generates the board from the tiles given """
 
-    import pdb
-    pdb.set_trace()
-    # Get list of tiles instead of Tiles obj
-    tiles = tiles.tiles
+    segments = []
 
-    # Splits the board into segments that can be pieced into a cohesive whole
-    tileSegments = []
+    rows = [[0,1], 
+            [2,3,4,5], 
+            [6,7,8,9,10,11],
+            [12,13,14,15,16,17],
+            [18,19,20,21],
+            [22,23]]
 
-    # Piece the board together from a combination of the tiles and its segments 
+    spaces = ['            ',
+              '      ',
+              '',
+              '',
+              '      ',
+              '            ']
 
-    # Add the first segment
-    firstSegment = self.board[0:tiles[0].name.index]
-    tileSegments.append(firstSegment)
+    names = [t.name for t in tiles]
+    players = [t.player for t in tiles]
+    statuses = [t.status for t in tiles]
 
-    for i in range(0, len(tiles)-1):
-      # Append the tile name, then the next segment
-      tileSegments.append(tiles[i].name.value)
-      segStart = tiles[i].name.index + self.NameWidth
-      segEnd = tiles[i+1].name.index
-      # TODO: Must add the other values, not just the name
-      tileSegment = self.board[segStart:segEnd]
-      tileSegments.append(tileSegment)
+    allSegs = []
 
-    # Add the last tile and segment
-    lastTileIndex = len(tiles) - 1
-    tileSegments.append(tiles[lastTileIndex].name.value)
-    segStart = tiles[lastTileIndex].name.index + self.NameWidth
-    segEnd = len(self.board)
-    lastSegment = self.board[segStart:segEnd]
-    tileSegments.append(lastSegment)
+    for i in range(0, len(rows)):
+        nameSegments = self._gen_segments(rows[i], spaces[i], ('/', '\\'), names)
+        playerSegments = self._gen_segments(rows[i], spaces[i], ('|', '|'), players)
+        statusSegments = self._gen_segments(rows[i], spaces[i], ('\\', '/'), statuses, newLine=True)
 
-    # Turn all segments into one string to create the board
-    self.board = ''.join([s for s in tileSegments])
-    return self.board
+        allSegs.append(''.join(nameSegments))
+        allSegs.append(''.join(playerSegments))
+        allSegs.append(''.join(statusSegments))
+
+    return ''.join(allSegs)
+
+  def _gen_segments(self, row, space, dividers, tileSegments, newLine=None):
+
+    TILE_SPACE = ' '
+
+    segments = []
+    segments.append(space)
+
+    last = row[len(row)-1]
+    rowSegments = tileSegments[row[0]:last+1]
+
+    for i,rs in enumerate(rowSegments):
+
+        # Set get a unique icon for treasure - TODO: Should put this on Tile for when it's stolen
+        if rs.value in Constant.TreasureTiles.keys():
+            dividers = Constant.TreasureTiles.get(rs.value)
+
+        segments.append(dividers[0] + rs.value + dividers[1])
+        if len(rowSegments) != i:
+            segments.append(TILE_SPACE)
+        
+    segments.append(space + '\n')
+
+    if newLine != None:
+        segments.append('\n')
+
+    return segments

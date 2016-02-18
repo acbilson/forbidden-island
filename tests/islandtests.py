@@ -30,7 +30,7 @@ class TestIsland(unittest.TestCase):
       testTiles.append(Tile(i, "TST", "   ", "   "))
     t.tiles = testTiles
 
-    actual = self.island.generate_board(t)
+    actual = self.island.generate_board(t.tiles)
       
     self.assertTrue(len(actual) > 0)
 

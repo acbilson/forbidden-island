@@ -33,12 +33,16 @@ class Constant():
   "Raised": "   ",
   "Sunken": "SNK"}
 
-  Treasure = {
-  "Empty": "|",
-  "Earth": "E",
-  "Water": "W",
-  "Air": "A",
-  "Fire": "F"
+  TreasureTiles = {
+  "Empty": ("|","|"),
+  "COS": ("F","F"),
+  "COE": ("F","F"),
+  "CLP": ("W","W"),
+  "TLP": ("W","W"),
+  "WGD": ("A","A"),
+  "HGD": ("A","A"),
+  "TOS": ("E","E"),
+  "TOM": ("E","E")
   }
 
   PlayerType = {
