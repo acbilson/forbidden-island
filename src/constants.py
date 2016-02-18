@@ -34,15 +34,15 @@ class Constant():
   "Sunken": "SNK"}
 
   TreasureTiles = {
-  "Empty": ("|","|"),
-  "COS": ("F","F"),
-  "COE": ("F","F"),
-  "CLP": ("W","W"),
-  "TLP": ("W","W"),
-  "WGD": ("A","A"),
-  "HGD": ("A","A"),
-  "TOS": ("E","E"),
-  "TOM": ("E","E")
+  "Empty": ("|","\\"),
+  "COS": ("F","\\"),
+  "COE": ("F","\\"),
+  "CLP": ("W","\\"),
+  "TLP": ("W","\\"),
+  "WGD": ("A","\\"),
+  "HGD": ("A","\\"),
+  "TOS": ("E","\\"),
+  "TOM": ("E","\\")
   }
 
   PlayerType = {

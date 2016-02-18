@@ -29,6 +29,10 @@ class Island(object):
               '      ',
               '            ']
 
+    nameOutline = ('/', '\\')
+    playerOutline = ('|', '|')
+    statusOutline = ('\\', '/')
+
     names = [t.name for t in tiles]
     players = [t.player for t in tiles]
     statuses = [t.status for t in tiles]
@@ -36,9 +40,9 @@ class Island(object):
     allSegs = []
 
     for i in range(0, len(rows)):
-        nameSegments = self._gen_segments(rows[i], spaces[i], ('/', '\\'), names)
-        playerSegments = self._gen_segments(rows[i], spaces[i], ('|', '|'), players)
-        statusSegments = self._gen_segments(rows[i], spaces[i], ('\\', '/'), statuses, newLine=True)
+        nameSegments = self._gen_segments(rows[i], spaces[i], nameOutline, names)
+        playerSegments = self._gen_segments(rows[i], spaces[i], playerOutline, players)
+        statusSegments = self._gen_segments(rows[i], spaces[i], statusOutline, statuses, newLine=True)
 
         allSegs.append(''.join(nameSegments))
         allSegs.append(''.join(playerSegments))
@@ -46,7 +50,7 @@ class Island(object):
 
     return ''.join(allSegs)
 
-  def _gen_segments(self, row, space, dividers, tileSegments, newLine=None):
+  def _gen_segments(self, row, space, outlines, tileSegments, newLine=None):
 
     TILE_SPACE = ' '
 
@@ -60,9 +64,9 @@ class Island(object):
 
         # Set get a unique icon for treasure - TODO: Should put this on Tile for when it's stolen
         if rs.value in Constant.TreasureTiles.keys():
-            dividers = Constant.TreasureTiles.get(rs.value)
+            outlines = Constant.TreasureTiles.get(rs.value)
 
-        segments.append(dividers[0] + rs.value + dividers[1])
+        segments.append(outlines[0] + rs.value + outlines[1])
         if len(rowSegments) != i:
             segments.append(TILE_SPACE)
         
