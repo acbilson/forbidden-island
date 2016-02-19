@@ -26,7 +26,7 @@ class ConsoleIO(object):
     sys.stdout.write(content)
 
   def clear(self):
-    os.system('cls')
+    os.system('clear')
 
 
 class FileIO(object):
