@@ -4,7 +4,6 @@ from message import *
 
 # I separated these into two in order to make it possible to have a subscriber that cannot notify.  In hindsight,
 # perhaps the LogService should be one of these?
-# TODO: Descend LogService from IslandSubscriber instead of IslandNotifier
 
 class IslandSubscriber(object):
 
